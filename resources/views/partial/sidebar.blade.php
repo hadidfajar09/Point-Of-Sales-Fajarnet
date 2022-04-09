@@ -39,14 +39,14 @@
         <li><a href="https://adminlte.io/docs"><i class="fa fa-download"></i> <span>Pengeluaran</span></a></li>
         <li><a href="https://adminlte.io/docs"><i class="fa fa-upload"></i> <span>Pembelian</span></a></li>
         <li><a href="https://adminlte.io/docs"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Transaksi Lama</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Transaksi Baru</span></a></li>
+        <li><a href="https://adminlte.io/docs"><i class="fa fa-bookmark-o"></i> <span>Transaksi Lama</span></a></li>
+        <li><a href="https://adminlte.io/docs"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
 
         <li class="header">REPORT</li>
         <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Laporan</span></a></li>
 
         <li class="header">SYSTEM</li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Website</span></a></li>
+        <li><a href="https://adminlte.io/docs"><i class="fa fa-cogs"></i> <span>Website</span></a></li>
        
       
       
