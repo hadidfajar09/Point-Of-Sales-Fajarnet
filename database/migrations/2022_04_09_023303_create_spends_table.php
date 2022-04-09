@@ -14,7 +14,9 @@ class CreateSpendsTable extends Migration
     public function up()
     {
         Schema::create('spends', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->text('deskripsi');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }

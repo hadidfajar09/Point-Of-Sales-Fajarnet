@@ -14,7 +14,14 @@ class CreateSalesTable extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->integer('id_member')->nullable();
+            $table->integer('id_user');
+            $table->integer('total_item');
+            $table->integer('total_price');
+            $table->tinyInteger('discount')->nullable();
+            $table->integer('pay');
+            $table->integer('accepted');
             $table->timestamps();
         });
     }
