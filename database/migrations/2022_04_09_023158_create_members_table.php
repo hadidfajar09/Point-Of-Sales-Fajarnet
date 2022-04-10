@@ -19,6 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('phone');
+            $table->integer('poin');
             $table->timestamps();
         });
     }

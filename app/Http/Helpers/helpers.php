@@ -31,7 +31,7 @@ function terbilang($angka){
 }
 
 function formatTanggal($tgl, $tampil_hari = true)  {
-    $nama_hari = array(1=> 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad');
+    $nama_hari = array('Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu');
 
     $nama_bulan = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
 
@@ -42,8 +42,16 @@ function formatTanggal($tgl, $tampil_hari = true)  {
     $tanggal = substr($tgl,8,2);
     $text = '';
 
-    $text .= "$tanggal-$bulan-$tahun";
+    if($tampil_hari){
+        $urutan_hari = date('w',mktime(0,0,0, substr($tgl, 5, 2), $tanggal, $tahun));
+        $hari = $nama_hari[$urutan_hari];
+        $text .= "$hari, $tanggal $bulan $tahun";
+    }else{
+
+        $text .= "$tanggal $bulan $tahun";
+    }
     return $text;
+
 }
 
 ?>
