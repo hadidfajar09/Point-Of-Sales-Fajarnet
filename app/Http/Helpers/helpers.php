@@ -24,7 +24,7 @@ function terbilang($angka){
     }elseif($angka < 1000000){ //2000 - 999999
         $terbilang = terbilang($angka / 1000) . ' ribu' . terbilang($angka % 1000);
     }elseif($angka < 1000000000){ //1000000 - 99999999
-        $terbilang = terbilang($angka / 1000000) . 'juta' . terbilang($angka % 1000000);
+        $terbilang = terbilang($angka / 1000000) . ' juta' . terbilang($angka % 1000000);
     }
 
     return $terbilang;
@@ -36,7 +36,7 @@ function formatTanggal($tgl, $tampil_hari = true)  {
     $nama_bulan = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
 
 
-    //2021 - 03 - 12
+    //formatTanggal('2022-04-13')
     $tahun = substr($tgl, 0, 4);
     $bulan = $nama_bulan[(int) substr($tgl, 5, 2)];
     $tanggal = substr($tgl,8,2);
@@ -52,6 +52,12 @@ function formatTanggal($tgl, $tampil_hari = true)  {
     }
     return $text;
 
+}
+
+function tambahNolDepan($value, $threeshold = null)
+{
+    //tambahNolDepan(1,5) = 00001
+    return sprintf("%0".$threeshold."s", $value);
 }
 
 ?>
