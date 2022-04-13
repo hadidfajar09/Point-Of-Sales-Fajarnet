@@ -34,7 +34,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
-               <form action="" class="form-product">
+               <form action="" method="post" class="form-product">
                  @csrf
                 <table class="table table-stiped table-bordered">
                   <thead>

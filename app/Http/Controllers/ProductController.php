@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -146,6 +148,20 @@ class ProductController extends Controller
 
     public function cetakBarcode(Request $request)
     {
-        return 
+        $dataproduct = array();
+
+        foreach($request->id_product as $id ){
+            $product = Product::find($id);
+            $dataproduct[] = $product;
+        }
+
+        $no = 1;
+
+        $pdf = PDF::loadView('backend.product.barcode', compact('dataproduct','no'));
+
+        $pdf->setPaper('a4','potrait');
+
+        return $pdf->stream('produk.pdf');
+
     }
 }
