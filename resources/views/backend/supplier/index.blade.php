@@ -31,13 +31,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
-              <form action="" method="post" class="form-supplier">
-                @csrf
                 <table class="table table-stiped table-bordered">
                     <thead>
-                      <th width="5%">
-                        <input type="checkbox" name="select_all" id="select_id">
-                      </th>
+                     
                         <th width="5%">No</th>
                         <th>Name</th>
                         <th>Address</th>
@@ -46,7 +42,6 @@
                     </thead>
                     
                 </table>
-              </form>
               <!-- /.row -->
             </div>
             <!-- ./box-body -->
@@ -79,7 +74,6 @@
                     url: '{{ route('supplier.data') }}'
                 },
                 columns: [
-                        {data: 'select_all', searchable: false, sortable: false},
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'name'},
                         {data: 'address'},
@@ -107,11 +101,6 @@
                 }
             });
 
-            $('[name=select_all]').on('click', function(){
-              $(':checkbox').prop('checked', this.checked);
-            });
-
-
         });
 
         function addForm(url){
@@ -126,7 +115,7 @@
 
         function editForm(url){
             $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Edit Member');
+            $('#modal-form .modal-title').text('Edit Supplier');
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action',url);

@@ -31,6 +31,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
+              <form action="" method="post" class="form-member">
+                @csrf
                 <table class="table table-stiped table-bordered">
                     <thead>
                       <th width="5%">
@@ -46,6 +48,7 @@
                     </thead>
                     
                 </table>
+              </form>
               <!-- /.row -->
             </div>
             <!-- ./box-body -->

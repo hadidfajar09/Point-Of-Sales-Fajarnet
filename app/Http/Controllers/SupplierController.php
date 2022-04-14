@@ -24,17 +24,13 @@ class SupplierController extends Controller
         return datatables()
             ->of($supplier)//source
             ->addIndexColumn() //untuk nomer
-            ->addColumn('select_all', function($supplier){
-                return '<input type="checkbox" name="id_member[]" value="'.$supplier->id.'">';
-            })
-          
             ->addColumn('aksi', function($supplier){ //untuk aksi
                 $button = '<div class="btn-group"><button onclick="editForm(`'.route('supplier.update', $supplier->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button><button onclick="deleteData(`'.route('supplier.destroy', $supplier->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
                return $button;
                
             })
-            ->rawColumns(['aksi','select_all'])//biar kebaca
+            ->rawColumns(['aksi'])//biar kebaca
             ->make(true);
     }
 
@@ -56,7 +52,9 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $supplier = Supplier::create($request->all());
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -65,9 +63,10 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $supplier)
+    public function show($id)
     {
-        //
+        $supplier = Supplier::find($id);
+        return response()->json($supplier);
     }
 
     /**
@@ -88,9 +87,12 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+        $supplier = Supplier::find($id);
+        $supplier->update($request->all());
+
+        return response()->json('Member Berhasil Disimpan', 200);
     }
 
     /**
@@ -99,8 +101,11 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)
     {
-        //
+        $supplier = Supplier::find($id);
+        $supplier->delete();
+
+        return response()->json('data berhasil dihapus');
     }
 }
