@@ -161,7 +161,7 @@ class ProductController extends Controller
 
         $pdf->setPaper('a4','potrait');
 
-        return $pdf->stream('produk.pdf');
+        return $pdf->stream('product.pdf');
 
     }
 }

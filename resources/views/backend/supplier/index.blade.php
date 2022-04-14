@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Product List
+    Supplier List
 @endsection
 
 @section('content')
@@ -9,11 +9,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Product List
+        Supplier List
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Product List</li>
+        <li class="active">Supplier List</li>
       </ol>
     </section>
 
@@ -24,37 +24,29 @@
         <div class="col-md-12">
           <div class="box">
             <div class="box-header with-border">
-              
               <div class="btn-group">
-                <button class="btn btn-success xs" onclick="addForm('{{ route('product.store') }}')"> <i class="fa fa-plus-circle"></i>   Add</button>
-                <button class="btn btn-danger xs" onclick="deleteSelected('{{ route('product.deleteselected') }}')"> <i class="fa fa-trash"></i>   Hapus</button>
-                <button class="btn btn-info xs" onclick="cetakBarcode('{{ route('product.barcode') }}')"> <i class="fa fa-barcode"></i>   Cetak Barcode</button>
+                <button class="btn btn-success xs" onclick="addForm('{{ route('supplier.store') }}')"> <i class="fa fa-plus-circle"></i>   Add</button>
+                
               </div>
-
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
-               <form action="" method="post" class="form-product">
-                 @csrf
+              <form action="" method="post" class="form-supplier">
+                @csrf
                 <table class="table table-stiped table-bordered">
-                  <thead>
+                    <thead>
                       <th width="5%">
                         <input type="checkbox" name="select_all" id="select_id">
                       </th>
-                      <th width="5%">No</th>
-                      <th>Code</th>
-                      <th>Category</th>
-                      <th>Produk</th>
-                      <th>Brand</th>
-                      <th>Harga Beli</th>
-                      <th>Harga Jual</th>
-                      <th>Discount</th>
-                      <th>Stock</th>
-                      <th width="10%"><i class="fa fa-cog"></i></th>
-                  </thead>
-                  
-              </table>
-               </form>
+                        <th width="5%">No</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th width="10%"><i class="fa fa-cog"></i></th>
+                    </thead>
+                    
+                </table>
+              </form>
               <!-- /.row -->
             </div>
             <!-- ./box-body -->
@@ -70,7 +62,7 @@
     <!-- /.content -->
   </div>
 
-  @include('backend.product.form')
+  @include('backend.supplier.form')
 @endsection
 
 @push('scripts')
@@ -84,19 +76,14 @@
             processing: true,
             autoWidth: false,
                 ajax: {
-                    url: '{{ route('product.data') }}'
+                    url: '{{ route('supplier.data') }}'
                 },
                 columns: [
                         {data: 'select_all', searchable: false, sortable: false},
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
-                        {data: 'product_code'},
-                        {data: 'category_name'},
-                        {data: 'product_name'},
-                        {data: 'brand'},
-                        {data: 'purchase_price'},
-                        {data: 'sale_price'},
-                        {data: 'discount'},
-                        {data: 'stock'},
+                        {data: 'name'},
+                        {data: 'address'},
+                        {data: 'phone'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
             });
@@ -124,43 +111,40 @@
               $(':checkbox').prop('checked', this.checked);
             });
 
+
         });
 
         function addForm(url){
             $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Add Product');
+            $('#modal-form .modal-title').text('Add Supplier');
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action',url);
             $('#modal-form [name=_method]').val('post');
-            $('#modal-form [name=product_name]').focus();
+            $('#modal-form [name=name]').focus();
         }
 
         function editForm(url){
             $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Edit Product');
+            $('#modal-form .modal-title').text('Edit Member');
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action',url);
             $('#modal-form [name=_method]').val('put');
-            $('#modal-form [name=product_name]').focus();
+            $('#modal-form [name=name]').focus();
 
             $.get(url)
               .done((response) => {
-                $('#modal-form [name=product_name]').val(response.product_name);
-                $('#modal-form [name=id_category]').val(response.id_category);
-                $('#modal-form [name=brand]').val(response.brand);
-                $('#modal-form [name=purchase_price]').val(response.purchase_price);
-                $('#modal-form [name=sale_price]').val(response.sale_price);
-                $('#modal-form [name=discount]').val(response.discount);
-                $('#modal-form [name=stock]').val(response.stock);
+                $('#modal-form [name=name]').val(response.name);
+                $('#modal-form [name=address]').val(response.address);
+                $('#modal-form [name=phone]').val(response.phone);
 
               })
 
               .fail((errors) => {
                 alert('Data tidak ditemukan');
                 return;
-              });
+              })
         }
 
         function deleteData(url) {
@@ -180,37 +164,13 @@
           }
         }
 
-        function deleteSelected(url){
-          if ($('input:checked').length > 1) {
-            if(confirm('Yakin ingin menghapus data terpilih?')){
-              $.post(url, $('.form-product').serialize())
-              .done((response) => {
-                  table.ajax.reload();
-              })
-  
-              .fail((response) => {
-                alert('tidak dapat menghapus data');
-                return;
-              });
-
-            }
-          } else {;
-            alert('Pilih data yang ingin dihapus');
-            return;
-          }
-          
-        }
-
         function cetakBarcode(url){
           if($('input:checked').length < 1){
             alert('Pilih data yang ingin dicetak');
             return;
           }
-          else if($('input:checked').length < 3){
-            alert('Pilih minimal 3 data untuk dicetak');
-            return;
-          }else{
-            $('.form-product').attr('action',url).attr('target','_blank').submit();
+          else{
+            $('.form-member').attr('action',url).attr('target','_blank').submit();
           }
         }
     </script>

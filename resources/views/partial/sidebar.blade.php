@@ -32,8 +32,8 @@
         <li class="header">MASTER</li>
         <li><a href="{{ route('category.index') }}"><i class="fa fa-cube"></i> <span>Kategori</span></a></li>
         <li><a href="{{ route('product.index') }}"><i class="fa fa-cubes"></i> <span>Produk</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-id-card"></i> <span>Member</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-users"></i> <span>Supplier</span></a></li>
+        <li><a href="{{ route('member.index') }}"><i class="fa fa-id-card"></i> <span>Member</span></a></li>
+        <li><a href="{{ route('supplier.index') }}"><i class="fa fa-users"></i> <span>Supplier</span></a></li>
 
         <li class="header">TRANSAKSI</li>
         <li><a href="https://adminlte.io/docs"><i class="fa fa-download"></i> <span>Pengeluaran</span></a></li>
