@@ -42,10 +42,12 @@ class ProductController extends Controller
                 return '<span class="label label-success">'.$product->product_code.'</span>';
             })
             ->addColumn('purchase_price', function($product){
-                return formatUang($product->purchase_price);
+                $rp = 'Rp. ';
+                $format = formatUang($product->purchase_price);
+                return $rp . $format;
             })
             ->addColumn('sale_price', function($product){
-                return formatUang($product->sale_price);
+                return 'Rp. '. formatUang($product->sale_price); ;
             })
             ->addColumn('stock', function($product){
                 return formatUang($product->stock);
