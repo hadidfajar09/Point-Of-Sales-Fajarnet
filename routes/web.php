@@ -3,6 +3,8 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseDetailController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -50,4 +52,11 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/spend/data', [SpendController::class, 'data'])->name('spend.data');
     Route::resource('/spend',SpendController::class);
+
+    Route::get('/purchase/{id}/create', [purchaseController::class, 'create'])->name('purchase.create');
+    Route::resource('/purchase',PurchaseController::class)->except('create');
+
+    Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
+    Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
+    Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
 });

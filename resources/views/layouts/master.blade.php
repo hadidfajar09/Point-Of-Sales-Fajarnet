@@ -19,7 +19,6 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{ asset('AdminLTE-2/dist/css/skins/_all-skins.min.css') }}">
   <!-- Morris chart -->
-  <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/morris.js/morris.css') }}">
   <!-- jvectormap -->
   <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/jvectormap/jquery-jvectormap.css') }}">
   
@@ -41,6 +40,8 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  @stack('css')
 </head>
 <body class="hold-transition skin-purple-light sidebar-mini">
 <div class="wrapper">
@@ -75,7 +76,6 @@
 <script src="{{ asset('AdminLTE-2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- Morris.js charts -->
 <script src="{{ asset('AdminLTE-2/bower_components/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('AdminLTE-2/bower_components/morris.js/morris.min.js') }}"></script>
 <!-- Sparkline -->
 <script src="{{ asset('AdminLTE-2/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
 <!-- jvectormap -->
@@ -109,9 +109,7 @@
 <script src="{{ asset('AdminLTE-2/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('AdminLTE-2/bower_components/chart.js/Chart.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('AdminLTE-2/dist/js/pages/dashboard2.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('AdminLTE-2/dist/js/demo.js') }}"></script>
 {{-- validator --}}
 <script src="{{ asset('js/validator.min.js') }}"></script>
 
