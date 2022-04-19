@@ -24,15 +24,18 @@ Pembelian List
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <div class="btn-group">
+            <div class="">
               <button class="btn btn-success xs" onclick="addForm()"> <i
                   class="fa fa-plus-circle"></i> Transaksi Baru</button>
-
+                  @empty(! session('id_purchase'))
+                  <a href="{{ route('purchase-detail.index') }}" class="btn btn-primary xs"> <i
+                    class="fa fa-check-circle"></i> Transaksi Terakhir</a>
+                  @endempty
             </div>
           </div>
           <!-- /.box-header -->
           <div class="box-body table-responsive">
-            <table class="table table-stiped table-bordered">
+            <table class="table table-stiped table-bordered table-pembelian">
               <thead>
 
                 <th width="5%">No</th>
@@ -62,34 +65,61 @@ Pembelian List
 </div>
 
 @include('backend.purchase.supplier')
+@include('backend.purchase.detail')
 @endsection
 
 @push('scripts')
 
 {{-- buat datatable --}}
 <script>
-  let table;
+  let table, table2, table3;
 
         $(function(){
-            table = $('.table').DataTable({
-            // processing: true,
-            // autoWidth: false,
-            //     ajax: {
-            //         
-            //     },
-            //     columns: [
-            //             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            //             {data: 'created_at'},
-            //             {data: 'deskripsi'},
-            //             {data: 'nominal'},
-            //             {data: 'aksi', searchable: false, sortable: false},
-            //     ]
+            table = $('.table-pembelian').DataTable({
+            processing: true,
+            autoWidth: false,
+                ajax: {
+                    url: '{{ route('purchase.data') }}'
+                },
+                columns: [
+                        {data: 'DT_RowIndex', searchable: false, sortable: false},
+                        {data: 'created_at'},
+                        {data: 'supplier'},
+                        {data: 'total_item'},
+                        {data: 'total_price'},
+                        {data: 'discount'},
+                        {data: 'pay'},
+                        {data: 'aksi', searchable: false, sortable: false},
+                ]
+            });
+
+            table2 = $('.table-supplier').DataTable();
+
+            table3 = $('.table-detail').DataTable({
+              processing: true,
+              bsort: false,
+              dom: 'Brt',
+              columns: [
+                        {data: 'DT_RowIndex', searchable: false, sortable: false},
+                        {data: 'product_code'},
+                        {data: 'product_name'},
+                        {data: 'price_purchase'},
+                        {data: 'amount'},
+                        {data: 'subtotal'},
+                ]
             });
         });
 
         function addForm(){
             $('#modal-supplier').modal('show');
             
+        }
+
+        function detailForm(url){
+          $('#modal-detail').modal('show');
+
+          table3.ajax.url(url);
+          table3.ajax.reload();
         }
 
         function editForm(url){

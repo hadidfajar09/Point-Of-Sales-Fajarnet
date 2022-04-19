@@ -156,7 +156,7 @@ class PurchaseDetailController extends Controller
         $pay = $total - ($discount / 100 * $total);
         $data = [
             'totalrp' => formatUang($total),
-            'pay' => $pay,
+            'bayar' => round($pay),
             'bayarrp' => formatUang($pay),
             'terbilang' => ucwords(terbilang($pay).' Rupiah') 
         ];

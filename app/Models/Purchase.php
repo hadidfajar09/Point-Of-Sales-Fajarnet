@@ -12,4 +12,9 @@ class Purchase extends Model
     protected $table = 'purchases';
 
     protected $guarded = [];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'id_supplier', 'id');
+    }
 }

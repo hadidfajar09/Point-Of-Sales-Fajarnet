@@ -50,16 +50,16 @@ Transaksi Pembelian
           <div class="box-header with-border">
             <table class="">
               <tr>
-                <td>Supplier</td>
-                <td>: {{ $supplier->name }}</td>
+                <td>Supplier &nbsp;&nbsp;&nbsp;</td>
+                <td><strong> : {{ $supplier->name }}</strong> </td>
               </tr>
               <tr>
-                <td>Phone</td>
-                <td>: {{ $supplier->phone }}</td>
+                <td>Phone &nbsp;&nbsp;&nbsp;</td>
+                <td><strong> : {{ $supplier->phone }}</strong></td>
               </tr>
               <tr>
-                <td>Alamat</td>
-                <td>: {{ $supplier->address }}</td>
+                <td>Alamat &nbsp;&nbsp;&nbsp;</td>
+                <td><strong> : {{ $supplier->address }}</strong></td>
               </tr>
             </table>
           </div>
@@ -95,7 +95,7 @@ Transaksi Pembelian
                 <th>Harga</th>
                 <th style="width: 10px;">Jumlah</th>
                 <th>Subtotal</th>
-                <th style="width: 15px;""><i class="fa fa-cog"></i></th>
+                <th style="width: 15px;"><i class="fa fa-cog"></i></th>
               </thead>
 
             </table>
@@ -103,8 +103,8 @@ Transaksi Pembelian
             {{-- banner --}}
             <div class="row">
               <div class="col-md-8">
-                  <div class="tampil-bayar bg-primary">Rp. 100.000</div>
-                  <div class="tampil-terbilang">Seratus Ribu Rupiah</div>
+                  <div class="tampil-bayar bg-primary"></div>
+                  <div class="tampil-terbilang"></div>
               </div>
               <div class="col-lg-4">
                   <form action="{{ route('purchase.store') }}" class="form-pembelian" method="post">
@@ -135,7 +135,7 @@ Transaksi Pembelian
                       <div class="form-group row">
                         <label for="poin" class="col-lg-2 control-label">Poin</label>
                         <div class="col-lg-8">
-                            <input type="text" id="poin" class="form-control">
+                            <input type="text" class="form-control">
                         </div>
                     </div>
                   </form>
@@ -169,7 +169,7 @@ Transaksi Pembelian
 
         $(function(){
             table = $('.table-purchase').DataTable({
-            processing: true,
+            processing: false,
             autoWidth: false,
                 ajax: {
                   url: '{{ route('purchase_detail.data', $id_purchase) }}'
@@ -209,7 +209,9 @@ Transaksi Pembelian
                     'amount': amount
                 })
                 .done(response => {
-                    table.ajax.reload();
+                  $(this).on('mouseout', function () {
+                        table.ajax.reload();
+                    });
 
                 })
                 .fail(errors => {
@@ -217,6 +219,18 @@ Transaksi Pembelian
                     return;
                 });
             });
+
+            $(document).on('input','#discount', function(){
+              if($(this).val() == ""){
+                $(this).val(0).select();
+              }
+              loadForm($(this).val());
+            });
+
+            $('.btn-simpan').on('click', function(){
+              $('.form-pembelian').submit();
+            });
+
         });
 
         function addProduct(){
@@ -266,15 +280,20 @@ Transaksi Pembelian
         }
 
         function loadForm(discount = 0){
-          $('#total').val($('.total')).text();
-          $('#total_item').val($('.total_item')).text();
+          $('#total').val($('.total').text());
+          $('#total_item').val($('.total_item').text());
 
-          $.get(`{{ url('/purchase-detail/loadform') }}/${diskon}/${$('.total').text()}`)
+          $.get(`{{ url('/purchase-detail/loadform') }}/${discount}/${$('.total').text()}`)
           .done(response => {
-
+            $('#totalrp').val('Rp. '+ response.totalrp);
+            $('#bayarrp').val('Rp. '+ response.bayarrp);
+            $('#bayar').val(response.bayar);
+            $('.tampil-bayar').text('Rp. '+ response.bayarrp);
+            $('.tampil-terbilang').text(response.terbilang);
           })
           .fail(errors => {
-            
+            alert('tidak dapat menampilkan data');
+            return;
           });
         }
 

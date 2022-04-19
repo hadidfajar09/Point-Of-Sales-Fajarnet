@@ -24,7 +24,7 @@ function terbilang($angka){
     }elseif($angka < 1000000){ //2000 - 999999
         $terbilang = terbilang($angka / 1000) . ' ribu' . terbilang($angka % 1000);
     }elseif($angka < 1000000000){ //1000000 - 99999999
-        $terbilang = terbilang($angka / 1000000) . ' juta' . terbilang($angka % 1000000);
+        $terbilang = terbilang($angka / 1000000) . ' juta ' . terbilang($angka % 1000000);
     }
 
     return $terbilang;
