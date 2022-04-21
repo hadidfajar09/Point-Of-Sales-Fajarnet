@@ -78,10 +78,10 @@
                     @foreach ($data as $row)
                         <td class="text-center" with="50%">
                             <div class="box">
-                                <img src="{{ asset('img/member.png') }}" alt="card" width="100%">
+                                <img src="{{ asset($setting->path_member) }}" alt="card" width="100%">
                                 <div class="logo">
                                     <p>{{ CONFIG('app.name') }}</p>
-                                    <img src="{{ asset('img/logo001.PNG') }}" alt="card">
+                                    <img src="{{ asset($setting->path_logo) }}" alt="card">
                                 </div>
                                 <div class="name">{{ $row->name }}</div>
                                 <div class="phone">{{ $row->phone }}</div>

@@ -15,7 +15,7 @@ Transaksi Pembelian
         padding: 10px;
         background: #f0f0f0;
     }
-    .table-purchase tbody tr:last-child {
+    .table-sale tbody tr:last-child {
         display: none;
     }
     @media(max-width: 768px) {
@@ -33,11 +33,11 @@ Transaksi Pembelian
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Transaksi Pembelian
+      Transaksi Penjualan
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Transaksi Pembelian</li>
+      <li class="active">Transaksi Penjualan</li>
     </ol>
   </section>
 
@@ -47,22 +47,7 @@ Transaksi Pembelian
     <div class="row">
       <div class="col-md-12">
         <div class="box">
-          <div class="box-header with-border">
-            <table class="">
-              <tr>
-                <td>Supplier &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->name }}</strong> </td>
-              </tr>
-              <tr>
-                <td>Phone &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->phone }}</strong></td>
-              </tr>
-              <tr>
-                <td>Alamat &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->address }}</strong></td>
-              </tr>
-            </table>
-          </div>
+          
           <!-- /.box-header -->
           <div class="box-body table-responsive">
 
@@ -72,7 +57,7 @@ Transaksi Pembelian
               <label for="product_code" class="col-md-2">Product Code</label>
               <div class="col-md-5">
                 <div class="input-group">
-                  <input type="hidden" name="id_purchase" id="id_purchase" value="{{ $id_purchase }}">
+                  <input type="hidden" name="id_sale" id="id_sale" value="{{ $id_sale }}">
                   <input type="hidden" name="id_product" id="id_product">
                   <input type="text" class="form-control" name="product_code" id="product_code">
                   <span class="input-group-btn">
@@ -86,14 +71,14 @@ Transaksi Pembelian
             </div>
           </form>
             <br>
-            <table class="table table-stiped table-bordered table-purchase">
+            <table class="table table-stiped table-bordered table-sale">
               <thead>
-
                 <th width="5%">No</th>
                 <th style="width: 15px;">Code</th>
                 <th>Produk</th>
                 <th>Harga</th>
                 <th style="width: 10px;">Jumlah</th>
+                <th>Diskon</th>
                 <th>Subtotal</th>
                 <th style="width: 15px;"><i class="fa fa-cog"></i></th>
               </thead>
@@ -107,12 +92,27 @@ Transaksi Pembelian
                   <div class="tampil-terbilang"></div>
               </div>
               <div class="col-lg-4">
-                  <form action="{{ route('purchase.store') }}" class="form-pembelian" method="post">
+                  <form action="{{ route('transaksi.store') }}" class="form-sale" method="post">
                       @csrf
-                      <input type="hidden" name="id_purchase" value="{{ $id_purchase }}">
+                      <input type="hidden" name="id_sale" value="{{ $id_sale }}">
                       <input type="hidden" name="total" id="total">
                       <input type="hidden" name="total_item" id="total_item">
                       <input type="hidden" name="bayar" id="bayar">
+                      <input type="hidden" name="id_member" id="id_member">
+
+                      <div class="form-group row">
+                        <label for="id_member" class="col-lg-2 control-label">Member</label>
+                        <div class="col-lg-8">
+                          <div class="input-group">
+                            <input type="text" id="member" class="form-control">
+                            <span class="input-group-btn">
+                              <button onclick="tampilMember()" class="btn btn-info btn-flat" type="button">
+                                <i class="fa fa-arrow-right"></i>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                    </div>
 
                       <div class="form-group row">
                           <label for="totalrp" class="col-lg-2 control-label">Total</label>
@@ -123,15 +123,30 @@ Transaksi Pembelian
                       <div class="form-group row">
                           <label for="discount" class="col-lg-2 control-label">Diskon</label>
                           <div class="col-lg-8">
-                              <input type="number" name="discount" id="discount" class="form-control" value="{{ $discount }}">
+                              <input type="number" name="discount" id="discount" class="form-control" value="0" readonly>
                           </div>
                       </div>
+                     
                       <div class="form-group row">
                           <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                           <div class="col-lg-8">
-                              <input type="text" id="bayarrp" class="form-control">
+                              <input type="text" id="bayarrp" class="form-control" readonly>
                           </div>
                       </div>
+
+                      <div class="form-group row">
+                        <label for="diterima" class="col-lg-2 control-label">Diterima</label>
+                        <div class="col-lg-8">
+                            <input type="number" name="diterima" id="diterima" class="form-control" value="0" >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="kembali" class="col-lg-2 control-label">Kembali</label>
+                      <div class="col-lg-8">
+                          <input type="number" name="kembali" id="kembali" class="form-control" value="0" readonly>
+                      </div>
+                  </div>
                       <div class="form-group row">
                         <label for="poin" class="col-lg-2 control-label">Poin</label>
                         <div class="col-lg-8">
@@ -158,33 +173,37 @@ Transaksi Pembelian
   <!-- /.content -->
 </div>
 
-@include('backend.purchase_detail.product')
+@include('backend.sale_detail.product')
+@include('backend.sale_detail.member')
 @endsection
 
 @push('scripts')
 
 {{-- buat datatable --}}
 <script>
-  let table, table2;
+  let table, table2, table3;
 
         $(function(){
-            table = $('.table-purchase').DataTable({
+            $('body').addClass('sidebar-collapse')
+            table = $('.table-sale').DataTable({
             processing: false,
             autoWidth: false,
                 ajax: {
-                  url: '{{ route('purchase_detail.data', $id_purchase) }}'
+                  url: '{{ route('transaksi.data', $id_sale) }}',
                 },
                 columns: [
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'product_code'},
-                        {data: 'product'},
-                        {data: 'price_purchase'},
+                        {data: 'product_name'},
+                        {data: 'price_sale'},
                         {data: 'amount'},
+                        {data: 'discount'},
                         {data: 'subtotal'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ],
                 dom: 'Brt',
                 bSort: false,
+                paginate: false
             })
 
             .on('draw.dt', function(){
@@ -192,6 +211,7 @@ Transaksi Pembelian
             });
 
             table2 = $('.table-product').DataTable();
+            table3 = $('.table-member').DataTable();
 
             $(document).on('input','.qty', function(){
               let id = $(this).data('id');
@@ -203,7 +223,7 @@ Transaksi Pembelian
                 return;
               }
 
-              $.post(`{{ url('/purchase-detail') }}/${id}`, {
+              $.post(`{{ url('/transaksi') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
                     'amount': amount
@@ -228,7 +248,7 @@ Transaksi Pembelian
             });
 
             $('.btn-simpan').on('click', function(){
-              $('.form-pembelian').submit();
+              $('.form-sale').submit();
             });
 
         });
@@ -250,8 +270,10 @@ Transaksi Pembelian
           tambahProduct();
         }
 
+       
+
         function tambahProduct(){
-          $.post('{{ route('purchase-detail.store') }}', $('.form-product').serialize())
+          $.post('{{ route('transaksi.store') }}', $('.form-product').serialize())
             .done((response)=>{
               $('#product_code').focus();
               table.ajax.reload();
@@ -261,6 +283,20 @@ Transaksi Pembelian
               return;
             })
         } 
+
+        function tampilMember(){
+            $('#modal-member').modal('show');
+            
+        }
+
+        function pilihProduct(id,code){
+          $('#id_member').val(id);
+          $('#member_code').val(code);
+          hideProduct();
+          tambahProduct();
+        }
+
+
 
         function deleteData(url) {
           if(confirm('Yakin Ingin Hapus Data?')){
@@ -283,7 +319,7 @@ Transaksi Pembelian
           $('#total').val($('.total').text());
           $('#total_item').val($('.total_item').text());
 
-          $.get(`{{ url('/purchase-detail/loadform') }}/${discount}/${$('.total').text()}`)
+          $.get(`{{ url('/transaksi/loadform') }}/${discount}/${$('.total').text()}/${0}`)
           .done(response => {
             $('#totalrp').val('Rp. '+ response.totalrp);
             $('#bayarrp').val('Rp. '+ response.bayarrp);

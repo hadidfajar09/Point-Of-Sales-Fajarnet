@@ -103,7 +103,7 @@ Pembelian List
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'product_code'},
                         {data: 'product_name'},
-                        {data: 'price_purchase'},
+                      {data: 'price_purchase'},
                         {data: 'amount'},
                         {data: 'subtotal'},
                 ]

@@ -47,22 +47,7 @@ Transaksi Pembelian
     <div class="row">
       <div class="col-md-12">
         <div class="box">
-          <div class="box-header with-border">
-            <table class="">
-              <tr>
-                <td>Supplier &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->name }}</strong> </td>
-              </tr>
-              <tr>
-                <td>Phone &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->phone }}</strong></td>
-              </tr>
-              <tr>
-                <td>Alamat &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->address }}</strong></td>
-              </tr>
-            </table>
-          </div>
+        
           <!-- /.box-header -->
           <div class="box-body table-responsive">
 

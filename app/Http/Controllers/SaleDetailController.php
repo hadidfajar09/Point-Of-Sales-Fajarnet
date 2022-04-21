@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Product;
-use App\Models\PurchaseDetail;
-use App\Models\Supplier;
-use App\Models\Purchase;
+use App\Models\Sale;
+use App\Models\SaleDetail;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class PurchaseDetailController extends Controller
+class SaleDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,49 +19,56 @@ class PurchaseDetailController extends Controller
      */
     public function index()
     {
-        $id_purchase = session('id_purchase');
-        $products = Product::orderBy('product_code', 'asc')->get();
-        $supplier = Supplier::find(session('id_supplier'));
-        $discount = Purchase::find($id_purchase)->discount ?? 0;
+        $products = Product::orderBy('product_code','asc')->get();
+        $member = Member::orderBy('name','asc')->get();
+        $setting = Setting::first()->discount ?? 0;
 
-        if (!$supplier) {
-            abort(404);
+        if( $id_sale = session('id_sale')){
+            $sale = Sale::find($id_sale);
+            return view('backend.sale_detail.index', compact('products','member','setting', 'id_sale', 'sale'));
         }
 
-        return view('backend.purchase_detail.index', compact('id_purchase', 'products', 'supplier', 'discount'));
+        if(Auth::user()->level == 1){
+            return redirect()->route('transaksi.baru');
+        }else{
+            return redirect()->route('dashboard');
+        }
+
     }
 
     public function data($id)
     {
-        $purchase_detail = PurchaseDetail::with('product')->where('id_purchase', $id)->get();
+        $sale_detail = SaleDetail::with('product')->where('id_sale', $id)->get();
 
         $data = array();
         $total = 0;
         $total_item = 0;
 
-        foreach ($purchase_detail as $item) {
+        foreach ($sale_detail as $item) {
             $row = array();
             $row['product_code'] = '<span class="label label-success">' . $item->product->product_code . '</span>';
-            $row['product'] = $item->product['product_name'];
-            $row['price_purchase'] = 'Rp. ' . formatUang($item->price_purchase);
+            $row['product_name'] = $item->product['product_name'];
+            $row['price_sale'] = 'Rp. ' . formatUang($item->price_sale);
             $row['amount'] = '<input type="number" class="form-control input-sm qty" data-id="' . $item->id . '" min="1" max="10000" value="' . $item->amount . '">';
+            $row['discount'] = $item->discount.' %';
             $row['subtotal'] = 'Rp. ' . formatUang($item->subtotal);
-            $row['aksi'] = '<div class="btn-group"><button onclick="deleteData(`' . route('purchase-detail.destroy', $item->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
+
+            $row['aksi'] = '<div class="btn-group"><button onclick="deleteData(`' . route('transaksi.destroy', $item->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
             $data[] = $row;
-            $total += $item->price_purchase * $item->amount;
+            $total += $item->price_sale * $item->amount;
             $total_item += $item->amount;
         }
 
         $data[] = [
             'product_code' => '<div class="total hide">' . $total . '</div> <div class="total_item hide">' . $total_item . '</div>',
-            'product' => '',
-            'price_purchase' => '',
+            'product_name' => '',
+            'price_sale' => '',
             'amount' => '',
+            'discount' => '',
             'subtotal' => '',
             'aksi' => '',
         ];
-
 
         return datatables()
             ->of($data) //source
@@ -75,7 +84,7 @@ class PurchaseDetailController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -91,12 +100,13 @@ class PurchaseDetailController extends Controller
         if (!$products) {
             return response()->json('Data Gagal disimpan', 400);
         }
-        $detail = new PurchaseDetail();
-        $detail->id_purchase = $request->id_purchase;
+        $detail = new SaleDetail();
+        $detail->id_sale = $request->id_sale;
         $detail->id_product = $products->id;
-        $detail->price_purchase = $products->purchase_price;
+        $detail->price_sale = $products->sale_price;
+        $detail->discount = 0;
         $detail->amount = 1;
-        $detail->subtotal = $products->purchase_price;
+        $detail->subtotal = $products->sale_price;
         $detail->save();
 
         return response()->json('Data berhasil disimpan', 200);
@@ -105,10 +115,10 @@ class PurchaseDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PurchaseDetail  $purchaseDetail
+     * @param  \App\Models\SaleDetail  $saleDetail
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseDetail $purchaseDetail)
+    public function show(SaleDetail $saleDetail)
     {
         //
     }
@@ -116,10 +126,10 @@ class PurchaseDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PurchaseDetail  $purchaseDetail
+     * @param  \App\Models\SaleDetail  $saleDetail
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseDetail $purchaseDetail)
+    public function edit(SaleDetail $saleDetail)
     {
         //
     }
@@ -128,39 +138,36 @@ class PurchaseDetailController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseDetail  $purchaseDetail
+     * @param  \App\Models\SaleDetail  $saleDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SaleDetail $saleDetail)
     {
-        $detail = PurchaseDetail::find($id);
-        $detail->amount = $request->amount;
-        $detail->subtotal = $detail->price_purchase * $request->amount;
-        $detail->update();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PurchaseDetail  $purchaseDetail
+     * @param  \App\Models\SaleDetail  $saleDetail
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $listProduct = PurchaseDetail::find($id);
-        $listProduct->delete();
-
-        return response(null, 204);
+        //
     }
 
-    public function loadForm($discount, $total)
+    public function loadForm($discount = 0, $total = 0, $diterima = 0)
     {
         $pay = $total - ($discount / 100 * $total);
+        $kembali = ($diterima != 0) ? $diterima - $pay : 0;
+
         $data = [
             'totalrp' => formatUang($total),
             'bayar' => round($pay),
             'bayarrp' => formatUang($pay),
-            'terbilang' => ucwords(terbilang($pay).' Rupiah') 
+            'terbilang' => ucwords(terbilang($pay).' Rupiah'),
+            'kembalirp' => formatUang($kembali),
         ];
 
         return response()->json($data);

@@ -6,9 +6,13 @@
 
 
 @section('content')
+@php
+    $logo = DB::table('settings')->first();
+@endphp
 <div class="login-box">
     <div class="login-logo">
-      <a href="{{ url('/') }}"><b>Top</b>Celluler</a>
+      <img src="{{ asset($logo->path_logo) }}" width="25%" alt=""><br>
+      <a href="{{ url('/') }}"><b>Member</b>System</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -22,7 +26,7 @@
         @csrf
         <div class="form-group has-feedback @error('email') has-error @enderror">
             
-          <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required >
+          <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required autofocus >
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           @error('email')
                 <span class="help-block">{{ $message }}</span>

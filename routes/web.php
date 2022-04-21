@@ -5,6 +5,9 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseDetailController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SaleDetailController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +49,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('/member',MemberController::class);
     Route::post('/member/cetak-barcode', [MemberController::class, 'cetakBarcode'])->name('member.barcode');
 
-
     Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
     Route::resource('/supplier',SupplierController::class);
 
@@ -60,4 +62,13 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
     Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
     Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
+
+    Route::get('/transaksi/baru', [SaleController::class, 'create'])->name('transaksi.baru');
+    Route::get('/transaksi/{id}/data', [SaleDetailController::class, 'data'])->name('transaksi.data');
+    Route::get('/transaksi/loadform/{discount}/{total}/{diterima}', [SaleDetailController::class, 'loadForm'])->name('transaksi.loadform');
+    Route::resource('/transaksi',SaleDetailController::class)->except('show');
+
+
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+    Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -129,7 +130,9 @@ class MemberController extends Controller
         }
         $datamember = $datamember->chunk(2); //mecah array
 
-        $pdf = PDF::loadView('backend.member.barcode', compact('datamember'));
+        $setting = Setting::first();
+
+        $pdf = PDF::loadView('backend.member.barcode', compact('datamember','setting'));
 
         $pdf->setPaper(array(0,0,566.93,750.39),'potrait');
 

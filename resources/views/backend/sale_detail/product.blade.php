@@ -13,15 +13,15 @@
             <thead>
               <th>Code</th>
               <th>Produk</th>
-              <th>Harga Beli</th>
+              <th>Harga Jual</th>
               <th><i class="fa fa-cogs"></i></th>
             </thead>
             <tbody>
-              @foreach ($products as $key => $row)
+              @foreach ($products as $row)
                   <tr>
                     <td><span class="label label-info">{{ $row->product_code }}</span> </td>
                     <td>{{ $row->product_name }}</td>
-                    <td>Rp. {{ formatUang($row->purchase_price)  }}</td>
+                    <td>Rp. {{ formatUang($row->sale_price)  }}</td>
                     <td>
                       <a href="#" class="btn btn-primary btn-xs btn-flat" onclick="pilihProduct('{{ $row->id }}', '{{ $row->product_code }}')">
                         <i class="fa fa-check-circle"></i> Pilih
