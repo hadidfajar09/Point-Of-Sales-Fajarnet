@@ -10,6 +10,7 @@ use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\SupplierController;
+use App\Models\Sale;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,7 +64,14 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
     Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
 
+    Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
+    Route::get('/sale/data', [SaleController::class, 'data'])->name('sale.data');
+    Route::get('/sale/{id}', [SaleController::class, 'show'])->name('sale.show');
+    Route::delete('/sale/{id}', [SaleController::class, 'destroy'])->name('sale.destroy');
+
     Route::get('/transaksi/baru', [SaleController::class, 'create'])->name('transaksi.baru');
+    Route::post('/transaksi/simpan', [SaleController::class, 'store'])->name('transaksi.simpan');
+    Route::get('/transaksi/selesai', [SaleDetailController::class, 'selesai'])->name('transaksi.selesai');
     Route::get('/transaksi/{id}/data', [SaleDetailController::class, 'data'])->name('transaksi.data');
     Route::get('/transaksi/loadform/{discount}/{total}/{diterima}', [SaleDetailController::class, 'loadForm'])->name('transaksi.loadform');
     Route::resource('/transaksi',SaleDetailController::class)->except('show');

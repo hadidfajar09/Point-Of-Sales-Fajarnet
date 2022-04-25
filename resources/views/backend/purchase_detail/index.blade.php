@@ -210,7 +210,7 @@ Transaksi Pembelian
                 })
                 .done(response => {
                   $(this).on('mouseout', function () {
-                        table.ajax.reload();
+                        table.ajax.reload(() => loadForm($('#discount').val()));
                     });
 
                 })
@@ -254,7 +254,7 @@ Transaksi Pembelian
           $.post('{{ route('purchase-detail.store') }}', $('.form-product').serialize())
             .done((response)=>{
               $('#product_code').focus();
-              table.ajax.reload();
+              table.ajax.reload(() => loadForm($('#discount').val()));
             })
             .errors((response)=>{
               alert('Tidak dapat manyimpan data');
@@ -270,7 +270,7 @@ Transaksi Pembelian
             '_method': 'delete'
           })
                 .done((response) => {
-                    table.ajax.reload();
+                  table.ajax.reload(() => loadForm($('#discount').val()));
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menghapus data');
@@ -288,8 +288,10 @@ Transaksi Pembelian
             $('#totalrp').val('Rp. '+ response.totalrp);
             $('#bayarrp').val('Rp. '+ response.bayarrp);
             $('#bayar').val(response.bayar);
-            $('.tampil-bayar').text('Rp. '+ response.bayarrp);
+            $('.tampil-bayar').text('Bayar : Rp. '+ response.bayarrp);
             $('.tampil-terbilang').text(response.terbilang);
+
+            
           })
           .fail(errors => {
             alert('tidak dapat menampilkan data');

@@ -20,6 +20,6 @@ class Sale extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'id_member');
+        return $this->hasOne(User::class, 'id', 'id_user');
     }
 }

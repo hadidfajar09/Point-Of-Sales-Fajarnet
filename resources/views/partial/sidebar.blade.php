@@ -38,8 +38,8 @@
         <li class="header">TRANSAKSI</li>
         <li><a href="{{ route('spend.index') }}"><i class="fa fa-download"></i> <span>Pengeluaran</span></a></li>
         <li><a href="{{ route('purchase.index') }}"><i class="fa fa-upload"></i> <span>Pembelian</span></a></li>
-        <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-bookmark-o"></i> <span>Transaksi Lama</span></a></li>
+        <li><a href="{{ route('sale.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
+        <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-bookmark-o"></i> <span>Transaksi Aktif</span></a></li>
         <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
 
         <li class="header">REPORT</li>

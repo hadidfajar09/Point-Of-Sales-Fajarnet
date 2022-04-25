@@ -25,7 +25,8 @@ class SaleDetailController extends Controller
 
         if( $id_sale = session('id_sale')){
             $sale = Sale::find($id_sale);
-            return view('backend.sale_detail.index', compact('products','member','setting', 'id_sale', 'sale'));
+            $memberSelected =  $sale->member ?? new Member();
+            return view('backend.sale_detail.index', compact('products','member','setting', 'id_sale', 'sale', 'memberSelected'));
         }
 
         if(Auth::user()->level == 1){
@@ -141,9 +142,12 @@ class SaleDetailController extends Controller
      * @param  \App\Models\SaleDetail  $saleDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SaleDetail $saleDetail)
+    public function update(Request $request, $id)
     {
-        //
+        $detail = SaleDetail::find($id);
+        $detail->amount = $request->amount;
+        $detail->subtotal = $detail->price_sale * $request->amount;
+        $detail->update();
     }
 
     /**
@@ -154,13 +158,17 @@ class SaleDetailController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $listProduct = SaleDetail::find($id);
+        $listProduct->delete();
+
+        return response(null, 204);
     }
 
     public function loadForm($discount = 0, $total = 0, $diterima = 0)
     {
         $pay = $total - ($discount / 100 * $total);
         $kembali = ($diterima != 0) ? $diterima - $pay : 0;
+        $poin = round($total / 25000);
 
         $data = [
             'totalrp' => formatUang($total),
@@ -168,8 +176,15 @@ class SaleDetailController extends Controller
             'bayarrp' => formatUang($pay),
             'terbilang' => ucwords(terbilang($pay).' Rupiah'),
             'kembalirp' => formatUang($kembali),
+            'kembalibilang' => ucwords(terbilang($kembali).' Rupiah'),
+            'poinku' => $poin.' poin'
         ];
 
         return response()->json($data);
+    }
+
+    public function selesai()
+    {
+        return view('backend.sale_detail.selesai');
     }
 }

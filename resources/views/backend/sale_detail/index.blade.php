@@ -92,19 +92,28 @@ Transaksi Pembelian
                   <div class="tampil-terbilang"></div>
               </div>
               <div class="col-lg-4">
-                  <form action="{{ route('transaksi.store') }}" class="form-sale" method="post">
+                  <form action="{{ route('transaksi.simpan') }}" class="form-sale" method="post">
                       @csrf
                       <input type="hidden" name="id_sale" value="{{ $id_sale }}">
                       <input type="hidden" name="total" id="total">
                       <input type="hidden" name="total_item" id="total_item">
                       <input type="hidden" name="bayar" id="bayar">
-                      <input type="hidden" name="id_member" id="id_member">
+                      <input type="hidden" name="id_member" id="id_member" value="{{ $memberSelected->id_member }}">
+                      <input type="hidden" name="poin" id="poin">
+
+                    
+                      <div class="form-group row">
+                          <label for="totalrp" class="col-lg-2 control-label">Total</label>
+                          <div class="col-lg-8">
+                              <input type="text" id="totalrp" class="form-control" readonly>
+                          </div>
+                      </div>
 
                       <div class="form-group row">
-                        <label for="id_member" class="col-lg-2 control-label">Member</label>
+                        <label for="member_code" class="col-lg-2 control-label">Member</label>
                         <div class="col-lg-8">
                           <div class="input-group">
-                            <input type="text" id="member" class="form-control">
+                            <input type="text" id="member_code" name="member_code" class="form-control" value="{{ $memberSelected->member_code }}">
                             <span class="input-group-btn">
                               <button onclick="tampilMember()" class="btn btn-info btn-flat" type="button">
                                 <i class="fa fa-arrow-right"></i>
@@ -115,15 +124,9 @@ Transaksi Pembelian
                     </div>
 
                       <div class="form-group row">
-                          <label for="totalrp" class="col-lg-2 control-label">Total</label>
-                          <div class="col-lg-8">
-                              <input type="text" id="totalrp" class="form-control" readonly>
-                          </div>
-                      </div>
-                      <div class="form-group row">
                           <label for="discount" class="col-lg-2 control-label">Diskon</label>
                           <div class="col-lg-8">
-                              <input type="number" name="discount" id="discount" class="form-control" value="0" readonly>
+                              <input type="number" name="discount" id="discount" class="form-control" value="{{ !empty($memberSelected->id_member) ? $setting : 0}}" readonly>
                           </div>
                       </div>
                      
@@ -137,20 +140,20 @@ Transaksi Pembelian
                       <div class="form-group row">
                         <label for="diterima" class="col-lg-2 control-label">Diterima</label>
                         <div class="col-lg-8">
-                            <input type="number" name="diterima" id="diterima" class="form-control" value="0" >
+                            <input type="number" name="diterima" id="diterima" class="form-control" value="{{ $sale->accepted ?? 0 }}" > 
                         </div>
                     </div>
 
                     <div class="form-group row">
                       <label for="kembali" class="col-lg-2 control-label">Kembali</label>
                       <div class="col-lg-8">
-                          <input type="number" name="kembali" id="kembali" class="form-control" value="0" readonly>
+                          <input type="text" name="kembalian" id="kembalian" class="form-control" value="0" readonly>
                       </div>
                   </div>
                       <div class="form-group row">
-                        <label for="poin" class="col-lg-2 control-label">Poin</label>
+                        <label for="poinku" class="col-lg-2 control-label">Poin</label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" value="0" name="poinku" id="poinku" readonly>
                         </div>
                     </div>
                   </form>
@@ -208,6 +211,9 @@ Transaksi Pembelian
 
             .on('draw.dt', function(){
                 loadForm($('#discount').val());
+                setTimeout(() => {
+                  $('#diterima').trigger('input');
+                }, 300);
             });
 
             table2 = $('.table-product').DataTable();
@@ -230,7 +236,7 @@ Transaksi Pembelian
                 })
                 .done(response => {
                   $(this).on('mouseout', function () {
-                        table.ajax.reload();
+                        table.ajax.reload(() => loadForm($('#discount').val()));
                     });
 
                 })
@@ -246,6 +252,15 @@ Transaksi Pembelian
               }
               loadForm($(this).val());
             });
+
+            $('#diterima').on('input', function(){
+              if ($(this).val() == "") {
+                  $(this).val(0).select();
+              }
+              loadForm($('#discount').val(), $(this).val());
+            }).focus(function(){
+              $(this).select();
+            })
 
             $('.btn-simpan').on('click', function(){
               $('.form-sale').submit();
@@ -276,7 +291,7 @@ Transaksi Pembelian
           $.post('{{ route('transaksi.store') }}', $('.form-product').serialize())
             .done((response)=>{
               $('#product_code').focus();
-              table.ajax.reload();
+              table.ajax.reload(() => loadForm($('#discount').val()));
             })
             .errors((response)=>{
               alert('Tidak dapat manyimpan data');
@@ -284,16 +299,23 @@ Transaksi Pembelian
             })
         } 
 
+        function hideMember(){
+            $('#modal-member').modal('hide');
+            
+        }
+
         function tampilMember(){
             $('#modal-member').modal('show');
             
         }
 
-        function pilihProduct(id,code){
+        function pilihMember(id,code){
           $('#id_member').val(id);
           $('#member_code').val(code);
-          hideProduct();
-          tambahProduct();
+          $('#discount').val('{{ $setting }}');
+          loadForm($('#discount').val());
+          $('#diterima').val(0).focus().select();
+          hideMember();
         }
 
 
@@ -306,7 +328,7 @@ Transaksi Pembelian
             '_method': 'delete'
           })
                 .done((response) => {
-                    table.ajax.reload();
+                    table.ajax.reload(() => loadForm($('#discount').val()));
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menghapus data');
@@ -315,17 +337,25 @@ Transaksi Pembelian
           }
         }
 
-        function loadForm(discount = 0){
+        function loadForm(discount = 0, diterima = 0){
           $('#total').val($('.total').text());
           $('#total_item').val($('.total_item').text());
 
-          $.get(`{{ url('/transaksi/loadform') }}/${discount}/${$('.total').text()}/${0}`)
+          $.get(`{{ url('/transaksi/loadform') }}/${discount}/${$('.total').text()}/${diterima}`)
           .done(response => {
             $('#totalrp').val('Rp. '+ response.totalrp);
             $('#bayarrp').val('Rp. '+ response.bayarrp);
             $('#bayar').val(response.bayar);
-            $('.tampil-bayar').text('Rp. '+ response.bayarrp);
+            $('.tampil-bayar').text('Bayar : Rp. '+ response.bayarrp);
             $('.tampil-terbilang').text(response.terbilang);
+            $('#poinku').val(response.poinku);
+
+            $('#kembalian').val('Rp.'+ response.kembalirp);
+
+            if($('#diterima').val() != 0){
+              $('.tampil-bayar').text('Kembali : Rp. '+ response.kembalirp);
+              $('.tampil-terbilang').text(response.kembalibilang);
+            }
           })
           .fail(errors => {
             alert('tidak dapat menampilkan data');
