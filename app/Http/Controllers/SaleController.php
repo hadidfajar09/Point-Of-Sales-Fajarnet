@@ -9,6 +9,7 @@ use App\Models\SaleDetail;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -221,8 +222,11 @@ class SaleController extends Controller
             abort(404);
         }
 
-        $detail = SaleDetail::with('product')->where('id',session('id_sale'))->get();
+        $detail = SaleDetail::with('product')->where('id_sale',session('id_sale'))->get();
 
-        return view('backend.sale.nota_besar',compact('setting','detail'));
+        $pdf = PDF::loadView('backend.sale.nota_besar', compact('setting','sale','detail'));
+        $pdf->setPaper(0,0,609,440, 'potrait');
+
+        return $pdf->stream(date('Y-m-d-his') . ' Nota Transaksi.pdf');
     }
 }

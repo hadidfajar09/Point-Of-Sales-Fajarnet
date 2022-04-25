@@ -33,12 +33,12 @@ Transaksi Selesai
             <!-- /.row -->
           </div>
           <div class="box-footer">
-            @if ($setting->nota_type == 1)
-            <button class="btn btn-primary" onclick="notaKecil('{{ route('transaksi.nota_kecil') }}','Nota PDF')">Cetak Nota</button>
-            @else
-            <button class="btn btn-primary" onclick="notaBesar('{{ route('transaksi.nota_besar','Nota PDF')">Cetak Nota</button>
-            @endif
-            <a href="{{ route('transaksi.baru') }}" class="btn btn-warning">Transaksi Baru</a>
+                @if ($setting->nota_type == 1)
+                <button class="btn btn-warning btn-flat" onclick="notaKecil('{{ route('transaksi.nota_kecil') }}', 'Nota Kecil')">Cetak Ulang Nota</button>
+                @else
+                <button class="btn btn-info btn-flat" onclick="notaBesar('{{ route('transaksi.nota_besar') }}', 'Nota PDF')">Cetak Ulang Nota</button>
+                @endif
+            <a href="{{ route('transaksi.baru') }}" class="btn btn-primary">Transaksi Baru</a>
 
           </div>
 
@@ -61,36 +61,34 @@ Transaksi Selesai
 @push('scripts')
 
 <script>
-  function notaKecil(){
-    popupCenter(url,title,720,675);
-  }
-  function notaBesar(){
-    popupCenter(url,title,720,675);
-  }
+  document.cookie = "innerHeight=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-  function popupCenter(url, title, w, h){
-    // Fixes dual-screen position                             Most browsers      Firefox
-    const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
-    const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
+  function notaKecil(url, title) {
+        popupCenter(url, title, 625, 500);
+    }
+    function notaBesar(url, title) {
+        popupCenter(url, title, 900, 675);
+    }
 
-    const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-    const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-
-    const systemZoom = width / window.screen.availWidth;
-    const left = (width - w) / 2 / systemZoom + dualScreenLeft
-    const top = (height - h) / 2 / systemZoom + dualScreenTop
-    const newWindow = window.open(url, title, 
-      `
-      scrollbars=yes,
-      width=${w / systemZoom}, 
-      height=${h / systemZoom}, 
-      top=${top}, 
-      left=${left}
-      `
-    )
-
-    if (window.focus) newWindow.focus();
-}
+    function popupCenter(url, title, w, h) {
+        const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
+        const dualScreenTop  = window.screenTop  !==  undefined ? window.screenTop  : window.screenY;
+        const width  = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        const systemZoom = width / window.screen.availWidth;
+        const left       = (width - w) / 2 / systemZoom + dualScreenLeft
+        const top        = (height - h) / 2 / systemZoom + dualScreenTop
+        const newWindow  = window.open(url, title, 
+        `
+            scrollbars=yes,
+            width  = ${w / systemZoom}, 
+            height = ${h / systemZoom}, 
+            top    = ${top}, 
+            left   = ${left}
+        `
+        );
+        if (window.focus) newWindow.focus();
+    }
 </script>
 
 

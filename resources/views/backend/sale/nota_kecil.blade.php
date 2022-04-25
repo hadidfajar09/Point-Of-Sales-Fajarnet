@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Nota Transaksi</title>
-       <style>
+    <?php
+    $style = '
+    <style>
         * {
             font-family: "consolas", sans-serif;
         }
@@ -26,10 +28,32 @@
         @media print {
             @page {
                 margin: 0;
-                size: 75mm }}
+                size: 75mm 
+    ';
+    ?>
+    <?php 
+    $style .= 
+        ! empty($_COOKIE['innerHeight'])
+            ? $_COOKIE['innerHeight'] .'mm; }'
+            : '}';
+    ?>
+    <?php
+    $style .= '
+            html, body {
+                width: 70mm;
+            }
+            .btn-print {
+                display: none;
+            }
+        }
     </style>
+    ';
+    ?>
+
+    {!! $style !!}
 </head>
-<body>
+<body onload="window.print()">
+    <button class="btn-print" style="position: absolute; right: 1rem; top: rem;" onclick="window.print()">Print</button>
     <div class="text-center">
         <h2 style="margin-bottom: 5px;">{{ strtoupper($setting->company_name) }}</h2>
         <p>{{ $setting->address }}</p>
@@ -53,7 +77,7 @@
             </tr>
         @endforeach
     </table>
-     <p class="text-center">===================================</p>
+     <p class="text-center">-----------------------------------</p>
 
     <table width="100%" style="border: 0">
         <tr>
