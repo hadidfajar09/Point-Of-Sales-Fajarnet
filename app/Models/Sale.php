@@ -22,4 +22,9 @@ class Sale extends Model
     {
         return $this->hasOne(User::class, 'id', 'id_user');
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'id_product','id');
+    }
 }

@@ -349,7 +349,7 @@ Transaksi Pembelian
             $('.tampil-bayar').text('Bayar : Rp. '+ response.bayarrp);
             $('.tampil-terbilang').text(response.terbilang);
             $('#poinku').val(response.poinku);
-
+            
             $('#kembalian').val('Rp.'+ response.kembalirp);
 
             if($('#diterima').val() != 0){

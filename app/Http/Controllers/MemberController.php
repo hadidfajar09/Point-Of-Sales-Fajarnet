@@ -32,13 +32,16 @@ class MemberController extends Controller
             ->addColumn('member_code', function($member){
                 return '<span class="label label-info">'.$member->member_code.'</span>';
             })
+            ->addColumn('phone', function($member){
+                return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text&app_absent=0" target="_blank">'.$member->phone.'</a>';
+            })
             ->addColumn('aksi', function($member){ //untuk aksi
                 $button = '<div class="btn-group"><button type="button" onclick="editForm(`'.route('member.update', $member->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button><button  type="button" onclick="deleteData(`'.route('member.destroy', $member->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
                return $button;
                
             })
-            ->rawColumns(['aksi','member_code','select_all'])//biar kebaca
+            ->rawColumns(['aksi','member_code','select_all','phone'])//biar kebaca
             ->make(true);
     }
 

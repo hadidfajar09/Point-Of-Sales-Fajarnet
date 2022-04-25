@@ -177,7 +177,7 @@ class SaleDetailController extends Controller
             'terbilang' => ucwords(terbilang($pay).' Rupiah'),
             'kembalirp' => formatUang($kembali),
             'kembalibilang' => ucwords(terbilang($kembali).' Rupiah'),
-            'poinku' => $poin.' poin'
+            'poinku' => $poin.' poin',
         ];
 
         return response()->json($data);
@@ -185,6 +185,8 @@ class SaleDetailController extends Controller
 
     public function selesai()
     {
-        return view('backend.sale_detail.selesai');
+        $setting = Setting::first();
+
+        return view('backend.sale_detail.selesai',compact('setting'));
     }
 }

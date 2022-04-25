@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetail;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -99,9 +100,10 @@ class SaleController extends Controller
         $sale->accepted = $request->diterima;
         $sale->update();
 
-        // $member = Member::findOrFail($request->id_member);
-        // $member->poin += $request->poin;
-        // $member->update();
+        $poin = $request->total / 25000;
+        $member = Member::findOrFail($request->id_member);
+        $member->poin += $poin;
+        $member->update();
 
         $detail = SaleDetail::where('id_sale',$request->id_sale)->get();
 
@@ -194,5 +196,33 @@ class SaleController extends Controller
         $sale->delete();
 
         return response()->json('data berhasil dihapus');
+    }
+
+    public function notaKecil()
+    {
+        $setting = Setting::first();
+        $sale = Sale::find(session('id_sale'));
+
+        if (!$sale) {
+            abort(404);
+        }
+
+        $detail = SaleDetail::with('product')->where('id_sale',session('id_sale'))->get();
+
+        return view('backend.sale.nota_kecil',compact('setting','detail','sale'));
+    }
+
+    public function notaBesar()
+    {
+        $setting = Setting::first();
+        $sale = Sale::find(session('id_sale'));
+
+        if (!$sale) {
+            abort(404);
+        }
+
+        $detail = SaleDetail::with('product')->where('id',session('id_sale'))->get();
+
+        return view('backend.sale.nota_besar',compact('setting','detail'));
     }
 }

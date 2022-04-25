@@ -10,7 +10,6 @@ use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\SupplierController;
-use App\Models\Sale;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,7 +69,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::delete('/sale/{id}', [SaleController::class, 'destroy'])->name('sale.destroy');
 
     Route::get('/transaksi/baru', [SaleController::class, 'create'])->name('transaksi.baru');
+    Route::get('/transaksi/nota_kecil', [SaleController::class, 'notaKecil'])->name('transaksi.nota_kecil');
+    Route::get('/transaksi/nota_besar', [SaleController::class, 'notaBesar'])->name('transaksi.nota_besar');
     Route::post('/transaksi/simpan', [SaleController::class, 'store'])->name('transaksi.simpan');
+    
     Route::get('/transaksi/selesai', [SaleDetailController::class, 'selesai'])->name('transaksi.selesai');
     Route::get('/transaksi/{id}/data', [SaleDetailController::class, 'data'])->name('transaksi.data');
     Route::get('/transaksi/loadform/{discount}/{total}/{diterima}', [SaleDetailController::class, 'loadForm'])->name('transaksi.loadform');
