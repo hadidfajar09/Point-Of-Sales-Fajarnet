@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Spend;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -14,10 +15,15 @@ class LaporanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $tanggalAwal = date('Y-m-d', mktime(0,0,0,date('m'),1,date('Y')));
         $tanggalAkhir = date('Y-m-d');
+
+        if($request->tanggal_awal){
+            $tanggalAwal = $request->tanggal_awal;
+            $tanggalAkhir = $request->tanggal_akhir;
+        }
         return view('backend.report.index', compact('tanggalAwal','tanggalAkhir'));
     }
 
@@ -27,9 +33,9 @@ class LaporanController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function data($awal,$akhir)
+     public function getData($awal, $akhir)
      {
-        $no = 0;
+        $no = 1;
         $data = array();
         $pendapatan = 0;
         $totalPendapatan = 0;
@@ -47,30 +53,47 @@ class LaporanController extends Controller
             $totalPendapatan += $pendapatan;
 
             $row = array();
+            $row['DT_RowIndex'] = $no++ ;
             $row['tanggal'] = formatTanggal($tanggal);
-            $row['penjualan'] = formatUang($total_penjualan);
-            $row['pembelian'] = formatUang($total_pembelian);
-            $row['pengeluaran'] = formatUang($total_pengeluaran);
-            $row['pendapatan'] = formatUang($pendapatan);
+            $row['penjualan'] = 'Rp ' .formatUang($total_penjualan);
+            $row['pembelian'] = 'Rp ' .formatUang($total_pembelian);
+            $row['pengeluaran'] = 'Rp ' .formatUang($total_pengeluaran);
+            $row['pendapatan'] = 'Rp ' .formatUang($pendapatan);
 
             $data[] = $row;
 
         }
 
         $data[] = [
+            'DT_RowIndex' => '',
             'tanggal' => '',
             'penjualan' => '',
             'pembelian' => '',
             'pengeluaran' => 'Total Pendapatan',
-            'pendapatan' => formatUang($totalPendapatan),
+            'pendapatan' =>  ' Rp' .formatUang($totalPendapatan),
         ];
 
+        return $data;
+     }
+
+     public function data($awal,$akhir)
+     {
+         
+        $data = $this->getData($awal,$akhir);
 
         return datatables()
         ->of($data)
-        ->addIndexColumn()
+        ->rawColumns(['pengeluaran','pendapatan'])
         ->make(true);
             
+     }
+
+     public function exportPdf($awal, $akhir)
+     {
+         $data =  $this->getData($awal,$akhir);
+            $pdf = PDF::loadView('backend.report.pdf', compact('awal','akhir','data'));
+            $pdf->setPaper('a4','potrait');
+            return $pdf->stream('Laporan Pendapatan'.date('Y-m-d-his').' .pdf');
      }
      
     public function create()

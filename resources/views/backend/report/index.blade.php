@@ -4,6 +4,10 @@
 Laporan Pendapatan 
 @endsection
 
+@push('css')
+      <!-- Date Picker -->
+  <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+@endpush
 @section('content')
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -24,9 +28,9 @@ Laporan Pendapatan
       <div class="col-md-12">
         <div class="box">
         <div class="box-header with-border">
-            <button class="btn btn-success" onclick="updatePeriode('{{ route('laporan.index') }}')"><i class="fa fa-plus-circle"></i> Ubah Periode</button>
+            <button class="btn btn-warning" onclick="updatePeriode('{{ route('laporan.index') }}')"><i class="fa fa-plus-circle"></i> Ubah Periode</button>
 
-            <a href="{{ route('laporan.export',[$tanggalAwal,$tanggalAkhir]) }}" target="_blank" class="btn btn-info" onclick="updatePeriode('{{ route('laporan.index') }}')"><i class="fa fa-plus-circle"></i> Export PDF</a>
+            <a href="{{ route('laporan.export',[$tanggalAwal,$tanggalAkhir]) }}" target="_blank" class="btn btn-success" onclick="updatePeriode('{{ route('laporan.index') }}')"><i class="fa fa-file-excel-o"></i> Export PDF</a>
         </div>
           <!-- /.box-header -->
           <div class="box-body table-responsive">
@@ -61,6 +65,8 @@ Laporan Pendapatan
 @endsection
 
 @push('scripts')
+<!-- datepicker -->
+<script src="{{ asset('AdminLTE-2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 
 {{-- buat datatable --}}
 <script>
@@ -68,8 +74,10 @@ Laporan Pendapatan
 
         $(function(){
             table = $('.table-report').DataTable({
-              processing: true,
-              autoWidth: false,
+              responsive: true,
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
                 ajax: {
                     url: '{{ route('laporan.data', [$tanggalAwal, $tanggalAkhir]) }}'
                 },
@@ -80,7 +88,10 @@ Laporan Pendapatan
                         {data: 'pembelian'},
                         {data: 'pengeluaran'},
                         {data: 'pendapatan'},
-                ]
+                        ],
+                dom: 'Brt',
+                bSort: false,
+                bPaginate: false,
             });
             
         });
@@ -91,47 +102,13 @@ Laporan Pendapatan
             
         }
 
-        $('#modal-periode').validator().on('submit', function(e){
-                if (! e.preventDefault()) {
-                    $.ajax({
-                        url: $('#modal-periode form').attr('action'),
-                        type: 'post',
-                        data: $('#modal-periode form').serialize()
-                    })
-                    .done((response) => {
-                        $('#modal-periode').modal('hide');
-                        table.ajax.reload();
-                    })
+        
 
-                    .fail((errors) => {
-                        alert('Tidak dapat menyimpan data');
-                        return;
-                    });
-                }
-            });
-
-        $('.datepicker').datapicker({
+        $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
 
-
-        function deleteData(url) {
-          if(confirm('Yakin Ingin Hapus Data?')){
-            
-          $.post(url, {
-            '_token': $('[name=csrf-token]').attr('content'),
-            '_method': 'delete'
-          })
-                .done((response) => {
-                    table.ajax.reload();
-                })
-                .fail((errors) => {
-                    alert('Tidak dapat menghapus data');
-                    return;
-              });
-          }
-        }
 
 </script>
 @endpush
