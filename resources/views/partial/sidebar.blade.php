@@ -43,7 +43,7 @@
         <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
 
         <li class="header">REPORT</li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Laporan</span></a></li>
+        <li><a href="{{ route('laporan.index') }}"><i class="fa fa-book"></i> <span>Laporan</span></a></li>
 
         <li class="header">SYSTEM</li>
         <li><a href="{{ route('setting.index') }}"><i class="fa fa-cogs"></i> <span>Website</span></a></li>
