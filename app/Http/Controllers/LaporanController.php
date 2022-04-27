@@ -35,7 +35,7 @@ class LaporanController extends Controller
 
      public function getData($awal, $akhir)
      {
-        $no = 1;
+         $no = 1;
         $data = array();
         $pendapatan = 0;
         $totalPendapatan = 0;
@@ -72,7 +72,6 @@ class LaporanController extends Controller
             'pengeluaran' => 'Total Pendapatan',
             'pendapatan' =>  ' Rp' .formatUang($totalPendapatan),
         ];
-
         return $data;
      }
 
@@ -94,6 +93,7 @@ class LaporanController extends Controller
             $pdf = PDF::loadView('backend.report.pdf', compact('awal','akhir','data'));
             $pdf->setPaper('a4','potrait');
             return $pdf->stream('Laporan Pendapatan'.date('Y-m-d-his').' .pdf');
+   
      }
      
     public function create()

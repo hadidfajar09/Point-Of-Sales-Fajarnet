@@ -88,10 +88,11 @@ Laporan Pendapatan
                         {data: 'pembelian'},
                         {data: 'pengeluaran'},
                         {data: 'pendapatan'},
-                        ],
+                ],
+
                 dom: 'Brt',
-                bSort: false,
-                bPaginate: false,
+            bSort: false,
+            bPaginate: false,
             });
             
         });
@@ -102,13 +103,10 @@ Laporan Pendapatan
             
         }
 
-        
-
-        $('.datepicker').datepicker({
+            $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
-            autoclose: true,
+            autoclose: true
         });
-
 
 </script>
 @endpush
