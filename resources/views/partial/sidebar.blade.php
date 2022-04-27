@@ -46,7 +46,8 @@
         <li><a href="{{ route('laporan.index') }}"><i class="fa fa-book"></i> <span>Laporan</span></a></li>
 
         <li class="header">SYSTEM</li>
-        <li><a href="{{ route('setting.index') }}"><i class="fa fa-cogs"></i> <span>Website</span></a></li>
+        <li><a href="{{ route('user.index') }}"><i class="fa fa-user"></i> <span>Kasir</span></a></li>
+        <li><a href="{{ route('setting.index') }}"><i class="fa fa-cogs"></i> <span>Pengaturan</span></a></li>
        
       
       

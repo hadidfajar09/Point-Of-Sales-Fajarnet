@@ -11,6 +11,7 @@ use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -87,4 +88,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/transaksi/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
     Route::get('/transaksi/pdf/{awal}/{akhir}', [LaporanController::class, 'exportPdf'])->name('laporan.export');
 
+    Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
+    Route::resource('/user',UserController::class);
 });
