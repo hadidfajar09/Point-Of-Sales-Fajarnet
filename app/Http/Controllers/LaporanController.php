@@ -29,7 +29,7 @@ class LaporanController extends Controller
 
      public function data($awal,$akhir)
      {
-        $no = 0;
+         $no = 1;
         $data = array();
         $pendapatan = 0;
         $totalPendapatan = 0;
@@ -47,30 +47,40 @@ class LaporanController extends Controller
             $totalPendapatan += $pendapatan;
 
             $row = array();
+            $row['DT_RowIndex'] = $no++ ;
             $row['tanggal'] = formatTanggal($tanggal);
-            $row['penjualan'] = formatUang($total_penjualan);
-            $row['pembelian'] = formatUang($total_pembelian);
-            $row['pengeluaran'] = formatUang($total_pengeluaran);
-            $row['pendapatan'] = formatUang($pendapatan);
+            $row['penjualan'] = 'Rp ' .formatUang($total_penjualan);
+            $row['pembelian'] = 'Rp ' .formatUang($total_pembelian);
+            $row['pengeluaran'] = 'Rp ' .formatUang($total_pengeluaran);
+            $row['pendapatan'] = 'Rp ' .formatUang($pendapatan);
 
             $data[] = $row;
 
         }
 
         $data[] = [
+            'DT_RowIndex' => '',
             'tanggal' => '',
             'penjualan' => '',
             'pembelian' => '',
             'pengeluaran' => 'Total Pendapatan',
-            'pendapatan' => formatUang($totalPendapatan),
+            'pendapatan' => 'Rp ' .formatUang($totalPendapatan),
         ];
 
 
         return datatables()
         ->of($data)
-        ->addIndexColumn()
+        
         ->make(true);
             
+     }
+
+     public function refresh(Request $request)
+     {
+         $tanggalAwal = $request->tanggal_awal;
+         $tanggalAkhir = $request->tanggal_akhir;
+
+         return view('backend.report.index', compact('tanggalAwal','tanggalAkhir'));
      }
      
     public function create()
