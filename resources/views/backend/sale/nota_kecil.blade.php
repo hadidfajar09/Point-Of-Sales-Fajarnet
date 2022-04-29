@@ -64,6 +64,7 @@
     </div>
     <div class="clear-both" style="clear: both"></div>
     <p>No Faktur : {{ tambahNolDepan($sale->id,6)  }}</p>
+    <p>Member : {{ $sale->member['name'] }}</p>
      <p class="text-center">===================================</p>
     <table width=100% style="border: 0">
         @foreach ($detail as $row)
@@ -103,6 +104,10 @@
         <tr>
             <td>Kembali : </td>
             <td class="text-right">Rp. {{ formatUang($sale->accepted - $sale->pay) }}</td>
+        </tr>
+        <tr>
+            <td>Poin : </td>
+            <td class="text-right">{{ round($sale->total_price/25000)  }} Poin</td>
         </tr>
     </table>
 

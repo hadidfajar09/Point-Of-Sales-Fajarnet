@@ -217,7 +217,7 @@ class SaleController extends Controller
     {
         $setting = Setting::first();
         $sale = Sale::find(session('id_sale'));
-
+        
         if (!$sale) {
             abort(404);
         }

@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td>Kode Member</td>
-            <td>: {{ $sale->member->kode_member ?? '-' }}</td>
+            <td>: {{ $sale->member['name'] ?? '-' }}</td>
         </tr>
     </table>
 
@@ -51,7 +51,7 @@
             <tr>
                 <th>No</th>
                 <th>Kode</th>
-                <th>Nama</th>
+                <th>Produk</th>
                 <th>Harga Satuan</th>
                 <th>Jumlah</th>
                 <th>Diskon</th>
@@ -64,17 +64,17 @@
                     <td class="text-center">{{ $key+1 }}</td>
                     <td>{{ $item->product->product_code }}</td>
                     <td>{{ $item->product->product_name }}</td>
-                    <td class="text-right">{{ formatUang($item->price_sale) }}</td>
-                    <td class="text-right">{{ formatUang($item->amount) }}</td>
+                    <td class="text-right">Rp {{ formatUang($item->price_sale) }}</td>
+                    <td class="text-right">Rp {{ formatUang($item->amount) }}</td>
                     <td class="text-right">{{ $item->discount }}</td>
-                    <td class="text-right">{{ formatUang($item->subtotal) }}</td>
+                    <td class="text-right">Rp {{ formatUang($item->subtotal) }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="6" class="text-right"><b>Total Harga</b></td>
-                <td class="text-right"><b>{{ formatUang($sale->total_price) }}</b></td>
+                <td class="text-right"><b>Rp {{ formatUang($sale->total_price) }}</b></td>
             </tr>
             <tr>
                 <td colspan="6" class="text-right"><b>Diskon</b></td>
@@ -82,15 +82,19 @@
             </tr>
             <tr>
                 <td colspan="6" class="text-right"><b>Total Bayar</b></td>
-                <td class="text-right"><b>{{ formatUang($sale->pay) }}</b></td>
+                <td class="text-right"><b>Rp {{ formatUang($sale->pay) }}</b></td>
             </tr>
             <tr>
                 <td colspan="6" class="text-right"><b>Diterima</b></td>
-                <td class="text-right"><b>{{ formatUang($sale->accepted) }}</b></td>
+                <td class="text-right"><b>Rp {{ formatUang($sale->accepted) }}</b></td>
             </tr>
             <tr>
                 <td colspan="6" class="text-right"><b>Kembali</b></td>
-                <td class="text-right"><b>{{ formatUang($sale->accepted - $sale->pay) }}</b></td>
+                <td class="text-right"><b>Rp {{ formatUang($sale->accepted - $sale->pay) }}</b></td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-right"><b>Poin</b></td>
+                <td class="text-right"><b>{{ round($sale->total_price / 25000) }} Poin</b></td>
             </tr>
         </tfoot>
     </table>
@@ -98,7 +102,7 @@
     <table width="100%">
         <tr>
             <td><b>Terimakasih telah berbelanja dan sampai jumpa</b></td>
-            <td class="text-center">
+            <td class="text-center"> <br><br>
                 Kasir
                 <br>
                 <br>

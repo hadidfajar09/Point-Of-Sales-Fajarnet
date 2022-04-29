@@ -41,6 +41,7 @@
         <li><a href="{{ route('sale.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
         <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-bookmark-o"></i> <span>Transaksi Aktif</span></a></li>
         <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
+        <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-money"></i> <span>Penukaran Poin</span></a></li>
 
         <li class="header">REPORT</li>
         <li><a href="{{ route('laporan.index') }}"><i class="fa fa-book"></i> <span>Laporan</span></a></li>
