@@ -44,6 +44,7 @@ Penukaran Poin List
                 <th>Item</th>
                 <th>Harga</th>
                 <th>Diskon</th>
+                <th>Bayar</th>
                 <th>Harga Poin</th>
                 <th width="10%"><i class="fa fa-cog"></i></th>
               </thead>
@@ -79,16 +80,17 @@ Penukaran Poin List
             processing: true,
             autoWidth: false,
                 ajax: {
-                    url: '#'
+                  url: '{{ route('changer.data') }}'
                 },
                 columns: [
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'created_at'},
-                        {data: 'supplier'},
+                        {data: 'member'},
                         {data: 'total_item'},
                         {data: 'total_price'},
                         {data: 'discount'},
                         {data: 'pay'},
+                        {data: 'total_poin'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
             });

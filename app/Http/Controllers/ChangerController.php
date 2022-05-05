@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Changer;
+use App\Models\ChangerDetail;
+use App\Models\Product;
 use App\Models\Member;
 use Illuminate\Http\Request;
 
@@ -26,28 +28,31 @@ class ChangerController extends Controller
      */
     public function data()
     {
-        $member = Member::orderBy('id','desc')->get();
+        $changer = Changer::orderBy('id','desc')->get();
 
         return datatables()
-            ->of($member)//source
+            ->of($changer)//source
             ->addIndexColumn() //untuk nomer
-            ->addColumn('created_at', function($member){
-                return formatTanggal($member->created_at);
+            ->addColumn('created_at', function($changer){
+                return formatTanggal($changer->created_at);
             })
-            ->addColumn('supplier', function($member){
-                return $member->supplier['name'];
+            ->addColumn('member', function($changer){
+                return $changer->member['name'];
             })
-            ->addColumn('total_price', function($member){
-                return 'Rp. ' . formatUang($member->total_price);
+            ->addColumn('total_price', function($changer){
+                return 'Rp. ' . formatUang($changer->total_price);
             })
-            ->addColumn('discount', function($member){
-                return $member->discount .' %';
+            ->addColumn('discount', function($changer){
+                return $changer->discount .' %';
             })
-            ->addColumn('pay', function($member){
-                return 'Rp. ' . formatUang($member->pay);
+            ->addColumn('pay', function($changer){
+                return 'Rp. ' . formatUang($changer->pay);
             })
-            ->addColumn('aksi', function($member){ //untuk aksi
-                $button = '<div class="btn-group"><button onclick="detailForm(`'.route('member.show', $member->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button><button onclick="deleteData(`'.route('member.destroy', $member->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
+            ->addColumn('total_poin', function($changer){
+                return formatUang($changer->total_poin);
+            })
+            ->addColumn('aksi', function($changer){ //untuk aksi
+                $button = '<div class="btn-group"><button onclick="detailForm(`'.route('changer.show', $changer->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button><button onclick="deleteData(`'.route('changer.destroy', $changer->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
                return $button;
                
@@ -63,19 +68,20 @@ class ChangerController extends Controller
      */
     public function create($id)
     {
-        $purchase = new Purchase();
-        $purchase->id_supplier = $id;
-        $purchase->total_item = 0;
-        $purchase->total_price = 0;
-        $purchase->discount = 0;
-        $purchase->pay = 0;
+        $changer = new Changer();
+        $changer->id_member = $id;
+        $changer->total_item = 0;
+        $changer->total_price = 0;
+        $changer->discount = 0;
+        $changer->pay = 0;
+        $changer->total_poin = 0;
 
-        $purchase->save();
+        $changer->save();
 
-        session(['id_purchase' => $purchase->id]);
-        session(['id_supplier' => $purchase->id_supplier]);
+        session(['id_changer' => $changer->id]);
+        session(['id_member' => $changer->id_member]);
 
-        return redirect()->route('purchase-detail.index');
+        return redirect()->route('changer-detail.index');
 
     }
 
@@ -87,22 +93,23 @@ class ChangerController extends Controller
      */
     public function store(Request $request)
     {
-        $purchase = Purchase::findOrFail($request->id_purchase);
-        $purchase->total_item = $request->total_item;
-        $purchase->total_price = $request->total;
-        $purchase->discount = $request->discount;
-        $purchase->pay = $request->bayar;
-        $purchase->update();
+        $changer = Changer::findOrFail($request->id_changer);
+        $changer->total_item = $request->total_item;
+        $changer->total_price = $request->total;
+        $changer->discount = $request->discount;
+        $changer->pay = $request->bayar;
+        $changer->total_poin = $request->total_poin;
+        $changer->update();
 
-        $detail = PurchaseDetail::where('id_purchase',$request->id_purchase)->get();
+        $detail = ChangerDetail::where('id_changer',$request->id_changer)->get();
 
         foreach($detail as $row){
             $product = Product::find($row->id_product);
-            $product->stock += $row->amount;
+            $product->stock -= $row->amount;
             $product->update();
         }
 
-        return redirect()->route('purchase.index');
+        return redirect()->route('changer.index');
 
     }
 
@@ -114,7 +121,7 @@ class ChangerController extends Controller
      */
     public function show($id)
     {
-        $detail = PurchaseDetail::with('product')->where('id_purchase',$id)->orderBy('id','desc')->get();
+        $detail = ChangerDetail::with('product')->where('id_changer',$id)->orderBy('id','desc')->get();
 
         return datatables()
         ->of($detail)//source
@@ -125,14 +132,17 @@ class ChangerController extends Controller
         ->addColumn('product_name', function($detail){
             return $detail->product->product_name;
         })
-        ->addColumn('price_purchase', function($detail){
-            return 'Rp. ' . formatUang($detail->price_purchase);
+        ->addColumn('price_sale', function($detail){
+            return 'Rp. ' . formatUang($detail->price_sale);
         })
         ->addColumn('amount', function($detail){
             return $detail->amount;
         })
         ->addColumn('subtotal', function($detail){
             return 'Rp. ' . formatUang($detail->subtotal);
+        })
+        ->addColumn('total_poin', function($detail){
+            return formatUang($detail->total_poin);
         })
         ->rawColumns(['product_code'])//biar kebaca
         ->make(true);
@@ -144,7 +154,7 @@ class ChangerController extends Controller
      * @param  \App\Models\Purchase  $purchase
      * @return \Illuminate\Http\Response
      */
-    public function edit(Purchase $purchase)
+    public function edit()
     {
         //
     }
@@ -156,7 +166,7 @@ class ChangerController extends Controller
      * @param  \App\Models\Purchase  $purchase
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Purchase $purchase)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -169,20 +179,20 @@ class ChangerController extends Controller
      */
     public function destroy($id)
     {
-        $purchase = Purchase::find($id);
-        $detail = PurchaseDetail::where('id_purchase', $purchase->id)->get();
+        $changer = Changer::find($id);
+        $detail = ChangerDetail::where('id_changer', $changer->id)->get();
 
         foreach($detail as $row){
 
             $product = Product::find($row->id_product);
             if($product){
-                $product->stock -= $row->amount;
+                $product->stock += $row->amount;
                 $product->update();
             }
 
             $row->delete();
         }
-        $purchase->delete();
+        $changer->delete();
 
         return response()->json('data berhasil dihapus');
     }

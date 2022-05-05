@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-Transaksi Pembelian
+Transaksi Penukaran Poin
 @endsection
 
 @push('css')
@@ -15,7 +15,7 @@ Transaksi Pembelian
         padding: 10px;
         background: #f0f0f0;
     }
-    .table-purchase tbody tr:last-child {
+    .table-changer tbody tr:last-child {
         display: none;
     }
     @media(max-width: 768px) {
@@ -33,11 +33,11 @@ Transaksi Pembelian
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Transaksi Pembelian
+      Transaksi Penukaran Poin
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Transaksi Pembelian</li>
+      <li class="active">Transaksi Penukaran Poin</li>
     </ol>
   </section>
 
@@ -50,16 +50,20 @@ Transaksi Pembelian
           <div class="box-header with-border">
             <table class="">
               <tr>
-                <td>Supplier &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->name }}</strong> </td>
+                <td>Member &nbsp;&nbsp;&nbsp;</td>
+                <td><strong> : {{ $member->name }}</strong> </td>
               </tr>
               <tr>
                 <td>Phone &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->phone }}</strong></td>
+                <td><strong> : {{ $member->phone }}</strong></td>
               </tr>
               <tr>
                 <td>Alamat &nbsp;&nbsp;&nbsp;</td>
-                <td><strong> : {{ $supplier->address }}</strong></td>
+                <td><strong> : {{ $member->address }}</strong></td>
+              </tr>
+              <tr>
+                <td>Sisa Poin &nbsp;&nbsp;&nbsp;</td>
+                <td><strong> : {{ $member->poin }}</strong></td>
               </tr>
             </table>
           </div>
@@ -72,7 +76,7 @@ Transaksi Pembelian
               <label for="product_code" class="col-md-2">Product Code</label>
               <div class="col-md-5">
                 <div class="input-group">
-                  <input type="hidden" name="id_purchase" id="id_purchase" value="{{ $id_purchase }}">
+                  <input type="hidden" name="id_changer" id="id_changer" value="{{ $id_changer }}">
                   <input type="hidden" name="id_product" id="id_product">
                   <input type="text" class="form-control" name="product_code" id="product_code">
                   <span class="input-group-btn">
@@ -86,7 +90,7 @@ Transaksi Pembelian
             </div>
           </form>
             <br>
-            <table class="table table-stiped table-bordered table-purchase">
+            <table class="table table-stiped table-bordered table-changer">
               <thead>
 
                 <th width="5%">No</th>
@@ -95,6 +99,7 @@ Transaksi Pembelian
                 <th>Harga</th>
                 <th style="width: 10px;">Jumlah</th>
                 <th>Subtotal</th>
+                <th>Biaya Poin</th>
                 <th style="width: 15px;"><i class="fa fa-cog"></i></th>
               </thead>
 
@@ -107,37 +112,39 @@ Transaksi Pembelian
                   <div class="tampil-terbilang"></div>
               </div>
               <div class="col-lg-4">
-                  <form action="{{ route('purchase.store') }}" class="form-pembelian" method="post">
+                  <form action="{{ route('changer.store') }}" class="form-changer" method="post">
                       @csrf
-                      <input type="hidden" name="id_purchase" value="{{ $id_purchase }}">
+                      <input type="hidden" name="id_changer" value="{{ $id_changer }}">
                       <input type="hidden" name="total" id="total">
                       <input type="hidden" name="total_item" id="total_item">
                       <input type="hidden" name="bayar" id="bayar">
+                      <input type="hidden" name="jumlah_poin" id="jumlah_poin">
 
                       <div class="form-group row">
-                          <label for="totalrp" class="col-lg-2 control-label">Total</label>
+                          <label for="totalrp" class="col-lg-3 control-label">Total</label>
                           <div class="col-lg-8">
                               <input type="text" id="totalrp" class="form-control" readonly>
                           </div>
                       </div>
+                    
                       <div class="form-group row">
-                          <label for="discount" class="col-lg-2 control-label">Diskon</label>
-                          <div class="col-lg-8">
-                              <input type="number" name="discount" id="discount" class="form-control" value="{{ $discount }}">
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                          <label for="bayar" class="col-lg-2 control-label">Bayar</label>
+                          <label for="bayar" class="col-lg-3 control-label">Bayar</label>
                           <div class="col-lg-8">
                               <input type="text" id="bayarrp" class="form-control">
                           </div>
                       </div>
                       <div class="form-group row">
-                        <label for="poin" class="col-lg-2 control-label">Poin</label>
+                        <label for="jumlah_poin" class="col-lg-3 control-label">Poin Bayar</label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control">
+                            <input type="text" name="total_jumlah_poin" id="total_jumlah_poin" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                      <label for="sisa_poin" class="col-lg-3 control-label">Sisa Poin</label>
+                      <div class="col-lg-8">
+                          <input type="text" id="sisa_poin" class="form-control">
+                      </div>
+                  </div>
                   </form>
               </div>
             <!-- /.row -->
@@ -146,7 +153,7 @@ Transaksi Pembelian
 
           <!-- /.box-footer -->
           <div class="box-footer">
-            <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i class="fa fa-floopy-o"></i>Simpan Transaksi</button>
+            <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i class="fa fa-floopy-o"></i>Simpan Penukaran</button>
           </div>
         </div>
         <!-- /.box -->
@@ -158,7 +165,7 @@ Transaksi Pembelian
   <!-- /.content -->
 </div>
 
-@include('backend.purchase_detail.product')
+@include('backend.changer_detail.product')
 @endsection
 
 @push('scripts')
@@ -168,11 +175,12 @@ Transaksi Pembelian
   let table, table2;
 
         $(function(){
-            table = $('.table-purchase').DataTable({
+          $('body').addClass('sidebar-collapse');
+            table = $('.table-changer').DataTable({
             processing: false,
             autoWidth: false,
                 ajax: {
-                  url: '{{ route('purchase_detail.data', $id_purchase) }}'
+                  url: '{{ route('changer_detail.data', $id_changer) }}'
                 },
                 columns: [
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -181,6 +189,7 @@ Transaksi Pembelian
                         {data: 'price_purchase'},
                         {data: 'amount'},
                         {data: 'subtotal'},
+                        {data: 'total_poin'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ],
                 dom: 'Brt',
@@ -203,7 +212,7 @@ Transaksi Pembelian
                 return;
               }
 
-              $.post(`{{ url('/purchase-detail') }}/${id}`, {
+              $.post(`{{ url('/changer-detail') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
                     'amount': amount
@@ -228,7 +237,7 @@ Transaksi Pembelian
             });
 
             $('.btn-simpan').on('click', function(){
-              $('.form-pembelian').submit();
+              $('.form-changer').submit();
             });
 
         });
@@ -251,7 +260,7 @@ Transaksi Pembelian
         }
 
         function tambahProduct(){
-          $.post('{{ route('purchase-detail.store') }}', $('.form-product').serialize())
+          $.post('{{ route('changer-detail.store') }}', $('.form-product').serialize())
             .done((response)=>{
               $('#product_code').focus();
               table.ajax.reload(() => loadForm($('#discount').val()));
@@ -282,14 +291,18 @@ Transaksi Pembelian
         function loadForm(discount = 0){
           $('#total').val($('.total').text());
           $('#total_item').val($('.total_item').text());
+          $('#total_jumlah_poin').val($('.jumlah_poin').text());
 
-          $.get(`{{ url('/purchase-detail/loadform') }}/${discount}/${$('.total').text()}`)
+          $.get(`{{ url('/changer-detail/loadform') }}/${discount}/${$('.total').text()}/${$('.jumlah_poin').text()}`)
           .done(response => {
             $('#totalrp').val('Rp. '+ response.totalrp);
             $('#bayarrp').val('Rp. '+ response.bayarrp);
             $('#bayar').val(response.bayar);
+            $('#total_jumlah_poin').val(response.jumlah_poin);
+            $('#sisa_poin').val(response.sisa_poin);
             $('.tampil-bayar').text('Bayar : Rp. '+ response.bayarrp);
             $('.tampil-terbilang').text(response.terbilang);
+            
 
             
           })

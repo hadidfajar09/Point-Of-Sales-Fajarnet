@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChangerController;
+use App\Http\Controllers\ChangerDetailController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
@@ -58,9 +59,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/spend/data', [SpendController::class, 'data'])->name('spend.data');
     Route::resource('/spend',SpendController::class);
 
-    Route::get('/purchase/data', [ChangerController::class, 'data'])->name('changer.data');
-    Route::get('/purchase/{id}/create', [ChangerController::class, 'create'])->name('changer.create');
-    Route::resource('/purchase',ChangerController::class)->except('create');
+    Route::get('/purchase/data', [PurchaseController::class, 'data'])->name('purchase.data');
+    Route::get('/purchase/{id}/create', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::resource('/purchase',PurchaseController::class)->except('create');
 
     Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
     Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
@@ -101,7 +102,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/changer/{id}/create', [ChangerController::class, 'create'])->name('changer.create');
     Route::resource('/changer',ChangerController::class)->except('create');
 
-    Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
-    Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
-    Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
+    Route::get('/changer-detail/{id}/data', [ChangerDetailController::class, 'data'])->name('changer_detail.data');
+    Route::get('/changer-detail/loadform/{discount}/{total}/{jumlah_poin}', [ChangerDetailController::class, 'loadForm'])->name('changer_detail.loadform');
+    Route::resource('/changer-detail',ChangerDetailController::class)->except('create','show','edit');
 });
