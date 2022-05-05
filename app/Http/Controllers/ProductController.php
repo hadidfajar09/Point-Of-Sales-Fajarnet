@@ -52,6 +52,9 @@ class ProductController extends Controller
             ->addColumn('stock', function($product){
                 return formatUang($product->stock);
             })
+            ->addColumn('poin', function($product){
+                return formatUang($product->poin);
+            })
             ->addColumn('aksi', function($product){ //untuk aksi
                 $button = '<div class="btn-group"><button type="button" onclick="editForm(`'.route('product.update', $product->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button><button type="button" onclick="deleteData(`'.route('product.destroy', $product->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
                return $button;
@@ -78,12 +81,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::latest()->first();
+        $product = Product::latest()->first() ?? new Product();
         $request['product_code'] = 'P'. tambahNolDepan((int)$product->id+1, 6);
 
         $product = Product::create($request->all());
 
-        return response()->json('Kategori Berhasil Disimpan', 200);
+        return response()->json('Product Berhasil Disimpan', 200);
     }
 
     /**

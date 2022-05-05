@@ -54,6 +54,9 @@ class SaleController extends Controller
             ->addColumn('pay', function($sale){
                 return 'Rp. ' . formatUang($sale->pay);
             })
+            ->addColumn('poin', function($sale){
+                return round($sale->total_price / 25000);
+            })
             ->addColumn('kasir', function($sale){
                 return $sale->user['name'];
             })

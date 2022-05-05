@@ -41,7 +41,7 @@
             <td>: {{ formatTanggal(date('Y-m-d')) }}</td>
         </tr>
         <tr>
-            <td>Kode Member</td>
+            <td>Member</td>
             <td>: {{ $sale->member['name'] ?? '-' }}</td>
         </tr>
     </table>
@@ -65,7 +65,7 @@
                     <td>{{ $item->product->product_code }}</td>
                     <td>{{ $item->product->product_name }}</td>
                     <td class="text-right">Rp {{ formatUang($item->price_sale) }}</td>
-                    <td class="text-right">Rp {{ formatUang($item->amount) }}</td>
+                    <td class="text-right">{{ formatUang($item->amount) }}</td>
                     <td class="text-right">{{ $item->discount }}</td>
                     <td class="text-right">Rp {{ formatUang($item->subtotal) }}</td>
                 </tr>

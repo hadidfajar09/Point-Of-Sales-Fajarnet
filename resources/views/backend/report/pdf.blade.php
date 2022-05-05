@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 </head>
 <body>
+    @php
+        $setting = DB::table('settings')->first();
+    @endphp
     <h3 class="text-center">Laporan Pendapatan Member System</h3>
-    <h4 class="text-center" style="color: red;">PT. Top Indo Maju</h4>
+    <h2 class="text-center" style="color: red;">{{ $setting->company_name }}</h2>
     <h4 class="text-center">
         Tanggal {{ formatTanggal($awal, false) }}
         s/d Tanggal {{ formatTanggal($akhir, false) }}

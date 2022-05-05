@@ -80,6 +80,15 @@
     </div>
 </div>
 
+<div class="form-group row">
+  <label for="poin" class="col-md-2 col-md-offset-1 control-label">Poin</label>
+  <div class="col-md-8">
+      <input class="form-control" type="number" name="poin" id="poin" value="0" required>
+      <span class="help-block with-errors"></span>
+
+  </div>
+</div>
+
 
         </div>
         <div class="modal-footer">

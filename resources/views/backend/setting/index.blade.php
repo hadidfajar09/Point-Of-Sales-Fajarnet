@@ -114,7 +114,6 @@ Pengaturan
                         <div class="form-group row">
                             <label for="" class="col-md-2 control-label col-lg-offset-1">Tipe Nota</label>
                             <div class="col-lg-2">
-
                                 <select class="form-control" name="nota_type" id="nota_type">
                                     <option value="2">Nota Besar</option>
                                     <option value="1">Nota Kecil</option>

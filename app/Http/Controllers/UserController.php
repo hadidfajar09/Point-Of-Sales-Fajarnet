@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -83,7 +85,7 @@ class UserController extends Controller
      */
     public function edit()
     {
-        //
+        
     }
 
     /**
@@ -118,5 +120,44 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json('data berhasil dihapus');
+    }
+
+    public function profile()
+    {   
+        $profile = Auth::user();
+        return view('backend.user.profile',compact('profile'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        $profile = Auth::user();
+
+        $profile->name = $request->name;
+        
+        if($request->has('password') && $request->password != ""){
+            if(Hash::check($request->old_password, $profile->password)){
+                if($request->password == $request->password_confirmation){
+                    $profile->password = bcrypt($request->password);
+                } else{
+                    return response()->json('Password konfirmasi tidak sesuai',422);
+                }
+            }
+            else{
+                return response()->json('Password lama tidak sesuai',422);
+            }
+        }
+
+        if($request->hasFile('foto')){
+            $image = $request->file('foto');
+            $nama = 'logo-'.date('Y-m-dHis').'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/img/'),$nama);
+
+            $profile->foto = 'img/'.$nama;
+        }
+
+        $profile->update();
+
+        return response()->json($profile,200);
     }
 }

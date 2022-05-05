@@ -4,7 +4,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{ asset('AdminLTE-2/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+          <img src="{{ asset(Auth::user()->foto) }}" class="img-circle img-profil" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ Auth::user()->name }}</p>
@@ -41,7 +41,7 @@
         <li><a href="{{ route('sale.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
         <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-bookmark-o"></i> <span>Transaksi Aktif</span></a></li>
         <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
-        <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-money"></i> <span>Penukaran Poin</span></a></li>
+        <li><a href="{{ route('changer.index') }}"><i class="fa fa-money"></i> <span>Penukaran Poin</span></a></li>
 
         <li class="header">REPORT</li>
         <li><a href="{{ route('laporan.index') }}"><i class="fa fa-book"></i> <span>Laporan</span></a></li>

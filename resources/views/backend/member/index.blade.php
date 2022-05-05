@@ -43,7 +43,7 @@
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone</th>
-                        <th>Poin</th>
+                        <th>Sisa Poin</th>
                         <th width="10%"><i class="fa fa-cog"></i></th>
                     </thead>
                     

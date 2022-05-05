@@ -80,7 +80,7 @@
                             <div class="box">
                                 <img src="{{ asset($setting->path_member) }}" alt="card" width="100%">
                                 <div class="logo">
-                                    <p>{{ CONFIG('app.name') }}</p>
+                                    <p>{{ $setting->company_name }}</p>
                                     <img src="{{ asset($setting->path_logo) }}" alt="card">
                                 </div>
                                 <div class="name">{{ $row->name }}</div>

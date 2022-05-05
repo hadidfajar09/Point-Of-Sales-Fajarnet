@@ -50,6 +50,7 @@
                       <th>Harga Jual</th>
                       <th>Discount</th>
                       <th>Stock</th>
+                      <th>Poin</th>
                       <th width="10%"><i class="fa fa-cog"></i></th>
                   </thead>
                   
@@ -97,6 +98,7 @@
                         {data: 'sale_price'},
                         {data: 'discount'},
                         {data: 'stock'},
+                        {data: 'poin'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
             });
@@ -154,6 +156,7 @@
                 $('#modal-form [name=sale_price]').val(response.sale_price);
                 $('#modal-form [name=discount]').val(response.discount);
                 $('#modal-form [name=stock]').val(response.stock);
+                $('#modal-form [name=poin]').val(response.poin);
 
               })
 

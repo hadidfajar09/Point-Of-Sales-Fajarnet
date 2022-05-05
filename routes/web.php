@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChangerController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
@@ -57,9 +58,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/spend/data', [SpendController::class, 'data'])->name('spend.data');
     Route::resource('/spend',SpendController::class);
 
-    Route::get('/purchase/data', [purchaseController::class, 'data'])->name('purchase.data');
-    Route::get('/purchase/{id}/create', [purchaseController::class, 'create'])->name('purchase.create');
-    Route::resource('/purchase',PurchaseController::class)->except('create');
+    Route::get('/purchase/data', [ChangerController::class, 'data'])->name('changer.data');
+    Route::get('/purchase/{id}/create', [ChangerController::class, 'create'])->name('changer.create');
+    Route::resource('/purchase',ChangerController::class)->except('create');
 
     Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
     Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
@@ -91,4 +92,16 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
     Route::resource('/user',UserController::class);
+    Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
+    Route::get('/user/profile/show', [UserController::class, 'show'])->name('user.profile.show');
+
+
+    Route::get('/changer/data', [ChangerController::class, 'data'])->name('changer.data');
+    Route::get('/changer/{id}/create', [ChangerController::class, 'create'])->name('changer.create');
+    Route::resource('/changer',ChangerController::class)->except('create');
+
+    Route::get('/purchase-detail/{id}/data', [PurchaseDetailController::class, 'data'])->name('purchase_detail.data');
+    Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
+    Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
 });
