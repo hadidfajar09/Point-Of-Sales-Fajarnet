@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="{{ url('/') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>T</b>C</span>
       <!-- logo for regular state and mobile devices -->
@@ -23,7 +23,7 @@
         
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="{{ url('/') }}" class="dropdown-toggle" data-toggle="dropdown">
               <img src="{{ asset(Auth::user()->foto) }}" class="user-image img-profil" alt="User Image">
               <span class="hidden-xs">{{ Auth::user()->name }}</span>
             </a>

@@ -44,6 +44,8 @@ Route::get('/', fn() => redirect()->route('login'));
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::group(['middleware' => 'level:0'], function(){
+    
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
     Route::resource('/category',CategoryController::class);
 
@@ -70,10 +72,13 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/purchase-detail/loadform/{discount}/{total}', [PurchaseDetailController::class, 'loadForm'])->name('purchase_detail.loadform');
     Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
 
+});
+
     Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
     Route::get('/sale/data', [SaleController::class, 'data'])->name('sale.data');
     Route::get('/sale/{id}', [SaleController::class, 'show'])->name('sale.show');
     Route::delete('/sale/{id}', [SaleController::class, 'destroy'])->name('sale.destroy');
+
 
     Route::get('/transaksi/baru', [SaleController::class, 'create'])->name('transaksi.baru');
     Route::get('/transaksi/nota_kecil', [SaleController::class, 'notaKecil'])->name('transaksi.nota_kecil');
@@ -86,6 +91,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('/transaksi',SaleDetailController::class)->except('show');
 
 
+ Route::group(['middleware' => 'level:0'], function(){
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
     Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
@@ -94,12 +100,13 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/transaksi/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
     Route::get('/transaksi/pdf/{awal}/{akhir}', [LaporanController::class, 'exportPdf'])->name('laporan.export');
 
+ });
+
     Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
     Route::resource('/user',UserController::class);
     Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
     Route::get('/user/profile/show', [UserController::class, 'show'])->name('user.profile.show');
-
 
     Route::get('/changer/data', [ChangerController::class, 'data'])->name('changer.data');
     Route::get('/changer/{id}/create', [ChangerController::class, 'create'])->name('changer.create');
@@ -108,4 +115,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/changer-detail/{id}/data', [ChangerDetailController::class, 'data'])->name('changer_detail.data');
     Route::get('/changer-detail/loadform/{discount}/{total}/{jumlah_poin}', [ChangerDetailController::class, 'loadForm'])->name('changer_detail.loadform');
     Route::resource('/changer-detail',ChangerDetailController::class)->except('create','show','edit');
+
+    
 });
