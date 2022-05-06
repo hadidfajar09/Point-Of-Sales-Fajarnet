@@ -47,14 +47,14 @@ class ChangerDetailController extends Controller
             $row = array();
             $row['product_code'] = '<span class="label label-success">' . $item->product->product_code . '</span>';
             $row['product'] = $item->product['product_name'];
-            $row['price_purchase'] = 'Rp. ' . formatUang($item->price_purchase);
+            $row['price_sale'] = 'Rp. ' . formatUang($item->price_sale);
             $row['amount'] = '<input type="number" class="form-control input-sm qty" data-id="' . $item->id . '" min="1" max="10000" value="' . $item->amount . '">';
             $row['subtotal'] = 'Rp. ' . formatUang($item->subtotal);
             $row['total_poin'] = formatUang($item->total_poin);
             $row['aksi'] = '<div class="btn-group"><button onclick="deleteData(`' . route('changer-detail.destroy', $item->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
             $data[] = $row;
-            $total += $item->price_purchase * $item->amount;
+            $total += $item->price_sale * $item->amount;
             $total_item += $item->amount;
             $jumlah_poin += $item->total_poin * $item->amount;
             
@@ -63,7 +63,7 @@ class ChangerDetailController extends Controller
         $data[] = [
             'product_code' => '<div class="total hide">' . $total . '</div> <div class="total_item hide">' . $total_item . '</div> <div class="jumlah_poin hide">' . $jumlah_poin . '</div>',
             'product' => '',
-            'price_purchase' => '',
+            'price_sale' => '',
             'amount' => '',
             'subtotal' => '',
             'total_poin' => '',
@@ -104,9 +104,9 @@ class ChangerDetailController extends Controller
         $detail = new ChangerDetail();
         $detail->id_changer = $request->id_changer;
         $detail->id_product = $products->id;
-        $detail->price_purchase = $products->purchase_price;
+        $detail->price_sale = $products->sale_price;
         $detail->amount = 1;
-        $detail->subtotal = $products->purchase_price;
+        $detail->subtotal = $products->sale_price;
         $detail->total_poin = $products->poin;
         $detail->save();
 
@@ -146,7 +146,7 @@ class ChangerDetailController extends Controller
     {
         $detail = ChangerDetail::find($id);
         $detail->amount = $request->amount;
-        $detail->subtotal = $detail->price_purchase * $request->amount;
+        $detail->subtotal = $detail->price_sale * $request->amount;
 
         $detail->update();
     }

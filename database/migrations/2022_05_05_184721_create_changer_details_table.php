@@ -17,7 +17,7 @@ class CreateChangerDetailsTable extends Migration
             $table->increments('id');
             $table->integer('id_changer');
             $table->integer('id_product');
-            $table->integer('price_purchase');
+            $table->integer('price_sale');
             $table->integer('amount');
             $table->integer('subtotal');
             $table->integer('total_poin');

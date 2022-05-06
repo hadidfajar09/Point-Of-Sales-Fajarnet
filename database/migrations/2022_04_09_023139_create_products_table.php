@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->integer('sale_price');
             $table->tinyInteger('discount')->nullable();
             $table->integer('stock');
-            $table->integer('poin')->nullable();
+            $table->integer('poin')->default(0);
             $table->timestamps();
         });
     }

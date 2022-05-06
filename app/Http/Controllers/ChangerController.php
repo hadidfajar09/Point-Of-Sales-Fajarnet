@@ -6,6 +6,7 @@ use App\Models\Changer;
 use App\Models\ChangerDetail;
 use App\Models\Product;
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ChangerController extends Controller
@@ -51,6 +52,9 @@ class ChangerController extends Controller
             ->addColumn('total_poin', function($changer){
                 return formatUang($changer->total_poin);
             })
+            ->addColumn('kasir', function($changer){
+                return $changer->user['name'];
+            })
             ->addColumn('aksi', function($changer){ //untuk aksi
                 $button = '<div class="btn-group"><button onclick="detailForm(`'.route('changer.show', $changer->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button><button onclick="deleteData(`'.route('changer.destroy', $changer->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
 
@@ -70,6 +74,7 @@ class ChangerController extends Controller
     {
         $changer = new Changer();
         $changer->id_member = $id;
+        $changer->id_user = Auth::user()->id;
         $changer->total_item = 0;
         $changer->total_price = 0;
         $changer->discount = 0;
@@ -96,11 +101,11 @@ class ChangerController extends Controller
         $changer = Changer::findOrFail($request->id_changer);
         $changer->total_item = $request->total_item;
         $changer->total_price = $request->total;
-        $changer->discount = $request->discount;
+        $changer->discount = 0;
         $changer->pay = $request->bayar;
-        $changer->total_poin = $request->total_poin;
+        $changer->total_poin = $request->total_jumlah_poin;
         $changer->update();
-
+        
         $detail = ChangerDetail::where('id_changer',$request->id_changer)->get();
 
         foreach($detail as $row){
@@ -108,6 +113,10 @@ class ChangerController extends Controller
             $product->stock -= $row->amount;
             $product->update();
         }
+        
+        $member = Member::findOrFail($changer->id_member);
+        $member->poin -= $request->total_jumlah_poin;
+        $member->update();
 
         return redirect()->route('changer.index');
 

@@ -24,11 +24,22 @@
                     <td>{{ $row->phone }}</td>
                     <td>{{ $row->address }}</td>
                     <td>{{ $row->poin }}</td>
+                    
+                    @if ( $row->poin === 0 )
                     <td>
-                      <a href="{{ route('changer.create', $row->id) }}" class="btn btn-primary btn-xs btn-flat">
-                        <i class="fa fa-check-circle"></i> Pilih
-                      </a>
+                    <a href="{{ route('changer.create', $row->id) }}" class="btn btn-primary btn-xs btn-flat" aria-disabled="true">
+                      <i class="fa fa-check-circle"></i> Pilih
+                    </a>
                     </td>
+                    @else
+                    <td>
+                    <a href="{{ route('changer.create', $row->id) }}" class="btn btn-primary btn-xs btn-flat">
+                      <i class="fa fa-check-circle"></i> Pilih
+                    </a>
+                  </td>
+                    @endif
+                     
+                    
                   </tr>
               @endforeach
             </tbody>

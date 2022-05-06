@@ -12,6 +12,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,18 +30,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'));
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('layouts.home');
-    })->name('dashboard');
-});
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('layouts.home');
+//     })->name('dashboard');
+// });
 
 
 Route::group(['middleware' => 'auth'], function(){
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
     Route::resource('/category',CategoryController::class);
 

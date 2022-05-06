@@ -43,9 +43,9 @@ Penukaran Poin List
                 <th>Member</th>
                 <th>Item</th>
                 <th>Harga</th>
-                <th>Diskon</th>
-                <th>Bayar</th>
+                
                 <th>Harga Poin</th>
+                <th>Kasir</th>
                 <th width="10%"><i class="fa fa-cog"></i></th>
               </thead>
 
@@ -88,9 +88,10 @@ Penukaran Poin List
                         {data: 'member'},
                         {data: 'total_item'},
                         {data: 'total_price'},
-                        {data: 'discount'},
-                        {data: 'pay'},
+                        
+                        
                         {data: 'total_poin'},
+                        {data: 'kasir'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
             });
@@ -105,9 +106,10 @@ Penukaran Poin List
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'product_code'},
                         {data: 'product_name'},
-                        {data: 'price_purchase'},
+                        {data: 'price_sale'},
                         {data: 'amount'},
                         {data: 'subtotal'},
+                        {data: 'total_poin'},
                 ]
             });
         });

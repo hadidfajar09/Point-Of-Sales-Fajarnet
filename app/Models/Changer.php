@@ -17,4 +17,9 @@ class Changer extends Model
     {
         return $this->belongsTo(Member::class, 'id_member', 'id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'id_user');
+    }
 }

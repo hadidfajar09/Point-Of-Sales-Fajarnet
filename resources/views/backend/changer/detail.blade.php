@@ -5,7 +5,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Detail Pembelian</h4>
+        <h4 class="modal-title">Detail Penukaran</h4>
       </div>
       <div class="modal-body">
        
@@ -17,6 +17,7 @@
               <th>Harga</th>
               <th>Jumlah</th>
               <th>Sub Total</th>
+              <th>Poin</th>
             </thead>
           
         </table>

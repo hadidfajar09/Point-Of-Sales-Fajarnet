@@ -186,7 +186,7 @@ Transaksi Penukaran Poin
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'product_code'},
                         {data: 'product'},
-                        {data: 'price_purchase'},
+                        {data: 'price_sale'},
                         {data: 'amount'},
                         {data: 'subtotal'},
                         {data: 'total_poin'},

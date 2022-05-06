@@ -28,13 +28,18 @@
 
       </ul>
       
+      
+          
+      
       <ul class="sidebar-menu" data-widget="tree">
+
+        @if (auth()->user()->level == 0)
         <li class="header">MASTER</li>
         <li><a href="{{ route('category.index') }}"><i class="fa fa-cube"></i> <span>Kategori</span></a></li>
         <li><a href="{{ route('product.index') }}"><i class="fa fa-cubes"></i> <span>Produk</span></a></li>
         <li><a href="{{ route('member.index') }}"><i class="fa fa-id-card"></i> <span>Member</span></a></li>
         <li><a href="{{ route('supplier.index') }}"><i class="fa fa-users"></i> <span>Supplier</span></a></li>
-
+        
         <li class="header">TRANSAKSI</li>
         <li><a href="{{ route('spend.index') }}"><i class="fa fa-download"></i> <span>Pengeluaran</span></a></li>
         <li><a href="{{ route('purchase.index') }}"><i class="fa fa-upload"></i> <span>Pembelian</span></a></li>
@@ -50,9 +55,17 @@
         <li><a href="{{ route('user.index') }}"><i class="fa fa-user"></i> <span>Kasir</span></a></li>
         <li><a href="{{ route('setting.index') }}"><i class="fa fa-cogs"></i> <span>Pengaturan</span></a></li>
        
-      
+        @else
+
+        <li><a href="{{ route('sale.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
+        <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-bookmark-o"></i> <span>Transaksi Aktif</span></a></li>
+        <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
+        <li><a href="{{ route('changer.index') }}"><i class="fa fa-money"></i> <span>Penukaran Poin</span></a></li>
+
+        @endif
       
       </ul>
+      
     </section>
     <!-- /.sidebar -->
   </aside>

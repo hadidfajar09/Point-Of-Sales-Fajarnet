@@ -22,7 +22,7 @@
                   <tr>
                     <td><span class="label label-info">{{ $row->product_code }}</span> </td>
                     <td>{{ $row->product_name }}</td>
-                    <td>Rp. {{ formatUang($row->purchase_price)  }}</td>
+                    <td>Rp. {{ formatUang($row->sale_price)  }}</td>
                     <td>{{ formatUang($row->poin)  }}</td>
                     <td>
                       <a href="#" class="btn btn-primary btn-xs btn-flat" onclick="pilihProduct('{{ $row->id }}', '{{ $row->product_code }}')">

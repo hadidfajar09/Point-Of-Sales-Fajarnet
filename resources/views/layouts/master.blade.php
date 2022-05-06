@@ -105,7 +105,7 @@
 <script src="{{ asset('AdminLTE-2/dist/js/demo.js') }}"></script>
 <!-- SlimScroll -->
 <script src="{{ asset('AdminLTE-2/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-<script src="{{ asset('AdminLTE-2/bower_components/chart.js/Chart.js') }}"></script>
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- AdminLTE for demo purposes -->
 {{-- validator --}}

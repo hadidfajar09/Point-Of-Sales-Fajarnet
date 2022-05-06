@@ -16,6 +16,7 @@ class CreateChangersTable extends Migration
         Schema::create('changers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_member');
+            $table->integer('id_user');
             $table->integer('total_item');
             $table->integer('total_price');
             $table->tinyInteger('discount');
