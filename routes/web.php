@@ -54,10 +54,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/product/cetak-barcode', [ProductController::class, 'cetakBarcode'])->name('product.barcode');
     Route::resource('/product',ProductController::class);
 
-    Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
-    Route::resource('/member',MemberController::class);
-    Route::post('/member/cetak-barcode', [MemberController::class, 'cetakBarcode'])->name('member.barcode');
-
+   
     Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
     Route::resource('/supplier',SupplierController::class);
 
@@ -73,6 +70,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('/purchase-detail',PurchaseDetailController::class)->except('create','show','edit');
 
 });
+    Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
+    Route::resource('/member',MemberController::class);
+    Route::post('/member/cetak-barcode', [MemberController::class, 'cetakBarcode'])->name('member.barcode');
+
 
     Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
     Route::get('/sale/data', [SaleController::class, 'data'])->name('sale.data');

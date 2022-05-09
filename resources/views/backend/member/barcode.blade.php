@@ -28,7 +28,7 @@
         }
         .logo img {
             position: absolute;
-            margin-top: -5pt;
+            margin-top: 20px;
             width: 40px;
             height: 40px;
             right: 16pt;
@@ -80,7 +80,6 @@
                             <div class="box">
                                 <img src="{{ asset($setting->path_member) }}" alt="card" width="100%">
                                 <div class="logo">
-                                    <p>{{ $setting->company_name }}</p>
                                     <img src="{{ asset($setting->path_logo) }}" alt="card">
                                 </div>
                                 <div class="name">{{ $row->name }}</div>

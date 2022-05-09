@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Changer;
 use App\Models\Member;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -119,6 +120,12 @@ class MemberController extends Controller
     {
         $member = Member::find($id);
         $member->delete();
+
+        $changer = Changer::where('id_member', $id)->get();
+
+        foreach ($changer as $row) {
+            $row->delete();
+        }
 
         return response()->json('data berhasil dihapus');
     }

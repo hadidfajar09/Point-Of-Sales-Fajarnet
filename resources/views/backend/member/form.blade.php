@@ -30,9 +30,11 @@
           </div>
 
           <div class="form-group row">
-            <label for="phone" class="col-md-2 col-md-offset-1 control-label">Phone</label>
+            <label for="phone" class="col-md-2 col-md-offset-1 control-label">Phone </label>
+            
             <div class="col-md-6">
                 <input class="form-control" type="number" name="phone" id="phone" required autofocus>
+                <span class="text-danger">Contoh : 6285757493227</span>
                 <span class="help-block with-errors"></span>
 
             </div>

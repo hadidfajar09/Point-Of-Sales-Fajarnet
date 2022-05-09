@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Purchase;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -105,6 +106,12 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::find($id);
         $supplier->delete();
+
+        $purchase = Purchase::where('id_supplier', $id)->get();
+
+        foreach ($purchase as $row) {
+            $row->delete();
+        }
 
         return response()->json('data berhasil dihapus');
     }

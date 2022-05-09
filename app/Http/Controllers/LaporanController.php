@@ -48,6 +48,7 @@ class LaporanController extends Controller
             $total_penjualan = Sale::where('created_at', 'LIKE', "%$tanggal%")->sum('pay');
             $total_pembelian = Purchase::where('created_at', 'LIKE', "%$tanggal%")->sum('pay');
             $total_pengeluaran = Spend::where('created_at', 'LIKE', "%$tanggal%")->sum('nominal');
+            
 
             $pendapatan = $total_penjualan - $total_pembelian - $total_pengeluaran;
             $totalPendapatan += $pendapatan;

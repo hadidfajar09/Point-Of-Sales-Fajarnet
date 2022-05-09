@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -118,6 +119,12 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+
+        $sale = Sale::where('id_user', $id)->get();
+
+        foreach ($sale as $row) {
+            $row->delete();
+        }
 
         return response()->json('data berhasil dihapus');
     }

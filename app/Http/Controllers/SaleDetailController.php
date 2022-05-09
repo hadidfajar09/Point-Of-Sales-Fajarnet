@@ -168,7 +168,7 @@ class SaleDetailController extends Controller
     {
         $pay = $total - ($discount / 100 * $total);
         $kembali = ($diterima != 0) ? $diterima - $pay : 0;
-        $poin = round($total / 25000);
+        $poin = round($total / 25000); //edit poin
 
         $data = [
             'totalrp' => formatUang($total),

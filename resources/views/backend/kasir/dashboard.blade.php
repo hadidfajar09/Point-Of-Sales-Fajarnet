@@ -27,7 +27,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-body text-center">
-              <h1>Selamat datang {{ Auth::user()->name }}</h1>
+              <h1>Selamat datang <br> <strong>{{ Auth::user()->name }}</strong></h1>
               <h2>Anda Login Sebagai Kasir </h2>
               <br><br>
               <a href="{{ route('transaksi.baru') }}" class="btn btn-success btn-lg">Transaksi Baru</a><br><br>

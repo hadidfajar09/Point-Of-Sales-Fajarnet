@@ -19,6 +19,8 @@ class CreateMembersTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('phone');
+            $table->string('tanggal_lahir')->nullable();
+            $table->string('tanggal_transaksi')->nullable();
             $table->integer('poin')->default(0);
             $table->timestamps();
         });

@@ -33,40 +33,39 @@ class SaleController extends Controller
 
     public function data()
     {
-        $sale = Sale::orderBy('id','desc')->get();
+        $sale = Sale::orderBy('id', 'desc')->get();
 
         return datatables()
-            ->of($sale)//source
+            ->of($sale) //source
             ->addIndexColumn() //untuk nomer
-            ->addColumn('created_at', function($sale){
+            ->addColumn('created_at', function ($sale) {
                 return formatTanggal($sale->created_at);
             })
-            ->addColumn('member', function($sale){
+            ->addColumn('member', function ($sale) {
                 $member = $sale->member['member_code'] ?? '';
-                return '<span class="label label-success">'.$member.'</span>';
+                return '<span class="label label-success">' . $member . '</span>';
             })
-            ->addColumn('total_price', function($sale){
+            ->addColumn('total_price', function ($sale) {
                 return 'Rp. ' . formatUang($sale->total_price);
             })
-            ->addColumn('discount', function($sale){
-                return $sale->discount .' %';
+            ->addColumn('discount', function ($sale) {
+                return $sale->discount . ' %';
             })
-            ->addColumn('pay', function($sale){
+            ->addColumn('pay', function ($sale) {
                 return 'Rp. ' . formatUang($sale->pay);
             })
-            ->addColumn('poin', function($sale){
+            ->addColumn('poin', function ($sale) {
                 return round($sale->total_price / 25000);
             })
-            ->addColumn('kasir', function($sale){
+            ->addColumn('kasir', function ($sale) {
                 return $sale->user['name'];
             })
-            ->addColumn('aksi', function($sale){ //untuk aksi
-                $button = '<div class="btn-group"><button onclick="detailForm(`'.route('sale.show', $sale->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button><button onclick="deleteData(`'.route('sale.destroy', $sale->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
- 
-               return $button;
-               
+            ->addColumn('aksi', function ($sale) { //untuk aksi
+                $button = '<div class="btn-group"><button onclick="detailForm(`' . route('sale.show', $sale->id) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button><button onclick="deleteData(`' . route('sale.destroy', $sale->id) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';
+
+                return $button;
             })
-            ->rawColumns(['aksi','member'])//biar kebaca
+            ->rawColumns(['aksi', 'member']) //biar kebaca
             ->make(true);
     }
 
@@ -104,21 +103,20 @@ class SaleController extends Controller
         $sale->accepted = $request->diterima;
         $sale->update();
 
-        $poin = $request->total / 25000;
+        $poin = $request->total / 25000; //edit poin
         $member = Member::findOrFail($request->id_member);
         $member->poin += $poin;
         $member->update();
 
-        $detail = SaleDetail::where('id_sale',$request->id_sale)->get();
+        $detail = SaleDetail::where('id_sale', $request->id_sale)->get();
 
-        foreach($detail as $row){
+        foreach ($detail as $row) {
             $product = Product::find($row->id_product);
             $product->stock -= $row->amount;
             $product->update();
         }
 
         return redirect()->route('transaksi.selesai');
-
     }
 
     /**
@@ -129,28 +127,28 @@ class SaleController extends Controller
      */
     public function show($id)
     {
-        $detail = SaleDetail::with('product')->where('id_sale',$id)->orderBy('id','desc')->get();
+        $detail = SaleDetail::with('product')->where('id_sale', $id)->orderBy('id', 'desc')->get();
 
         return datatables()
-        ->of($detail)//source
-        ->addIndexColumn() //untuk nomer
-        ->addColumn('product_code', function($detail){
-            return '<span class="label label-success">'.$detail->product->product_code.'</span>';
-        })
-        ->addColumn('product_name', function($detail){
-            return $detail->product->product_name;
-        })
-        ->addColumn('price_sale', function($detail){
-            return 'Rp. ' . formatUang($detail->price_sale);
-        })
-        ->addColumn('amount', function($detail){
-            return $detail->amount;
-        })
-        ->addColumn('subtotal', function($detail){
-            return 'Rp. ' . formatUang($detail->subtotal);
-        })
-        ->rawColumns(['product_code'])//biar kebaca
-        ->make(true);
+            ->of($detail) //source
+            ->addIndexColumn() //untuk nomer
+            ->addColumn('product_code', function ($detail) {
+                return '<span class="label label-success">' . $detail->product->product_code . '</span>';
+            })
+            ->addColumn('product_name', function ($detail) {
+                return $detail->product->product_name;
+            })
+            ->addColumn('price_sale', function ($detail) {
+                return 'Rp. ' . formatUang($detail->price_sale);
+            })
+            ->addColumn('amount', function ($detail) {
+                return $detail->amount;
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. ' . formatUang($detail->subtotal);
+            })
+            ->rawColumns(['product_code']) //biar kebaca
+            ->make(true);
     }
 
     /**
@@ -187,10 +185,10 @@ class SaleController extends Controller
         $sale = Sale::find($id);
         $detail = SaleDetail::where('id_sale', $sale->id)->get();
 
-        foreach($detail as $row){
+        foreach ($detail as $row) {
 
             $product = Product::find($row->id_product);
-            if($product){
+            if ($product) {
                 $product->stock += $row->amount;
                 $product->update();
             }
@@ -211,24 +209,24 @@ class SaleController extends Controller
             abort(404);
         }
 
-        $detail = SaleDetail::with('product')->where('id_sale',session('id_sale'))->get();
+        $detail = SaleDetail::with('product')->where('id_sale', session('id_sale'))->get();
 
-        return view('backend.sale.nota_kecil',compact('setting','detail','sale'));
+        return view('backend.sale.nota_kecil', compact('setting', 'detail', 'sale'));
     }
 
     public function notaBesar()
     {
         $setting = Setting::first();
         $sale = Sale::find(session('id_sale'));
-        
+
         if (!$sale) {
             abort(404);
         }
 
-        $detail = SaleDetail::with('product')->where('id_sale',session('id_sale'))->get();
+        $detail = SaleDetail::with('product')->where('id_sale', session('id_sale'))->get();
 
-        $pdf = PDF::loadView('backend.sale.nota_besar', compact('setting','sale','detail'));
-        $pdf->setPaper(0,0,609,440, 'potrait');
+        $pdf = PDF::loadView('backend.sale.nota_besar', compact('setting', 'sale', 'detail'));
+        $pdf->setPaper(0, 0, 609, 440, 'potrait');
 
         return $pdf->stream(date('Y-m-d-his') . ' Nota Transaksi.pdf');
     }

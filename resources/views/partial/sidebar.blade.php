@@ -57,6 +57,7 @@
        
         @else
 
+        <li><a href="{{ route('member.index') }}"><i class="fa fa-id-card"></i> <span>Member</span></a></li>
         <li><a href="{{ route('sale.index') }}"><i class="fa fa-cart-plus"></i> <span>Penjualan</span></a></li>
         <li><a href="{{ route('transaksi.index') }}"><i class="fa fa-bookmark-o"></i> <span>Transaksi Aktif</span></a></li>
         <li><a href="{{ route('transaksi.baru') }}"><i class="fa fa-bookmark"></i> <span>Transaksi Baru</span></a></li>
