@@ -30,6 +30,16 @@
           </div>
 
           <div class="form-group row">
+            <label for="name" class="col-md-2 col-md-offset-1 control-label">Tanggal Lahir</label>
+            <div class="col-md-6">
+                <input class="form-control datepicker" type="text" name="tanggal_lahir" id="tanggal_lahir">
+                <span class="help-block with-errors"></span>
+
+            </div>
+        </div>
+
+
+          <div class="form-group row">
             <label for="phone" class="col-md-2 col-md-offset-1 control-label">Phone </label>
             
             <div class="col-md-6">

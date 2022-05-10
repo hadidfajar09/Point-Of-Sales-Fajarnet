@@ -114,6 +114,7 @@ Transaksi Pembelian
                         <div class="col-lg-8">
                           <div class="input-group">
                             <input type="text" id="member_code" name="member_code" class="form-control" value="{{ $memberSelected->member_code }}">
+                            <span class="help-block with-errors"></span>
                             <span class="input-group-btn">
                               <button onclick="tampilMember()" class="btn btn-info btn-flat" type="button">
                                 <i class="fa fa-arrow-right"></i>

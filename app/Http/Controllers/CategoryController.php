@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\returnSelf;
@@ -109,6 +110,12 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $kategori = Category::find($id);
+        $product = Product::where('id_category', $id)->get();
+
+        foreach ($product as $row) {
+            $row->delete();
+        }
+
         $kategori->delete();
 
         return response()->json('data berhasil dihapus');

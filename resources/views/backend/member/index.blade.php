@@ -4,6 +4,11 @@
     Member List
 @endsection
 
+@push('css')
+      <!-- Date Picker -->
+  <link rel="stylesheet" href="{{ asset('AdminLTE-2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+@endpush
+
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -69,6 +74,9 @@
 
 @push('scripts')
 
+<!-- datepicker -->
+<script src="{{ asset('AdminLTE-2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
 {{-- buat datatable --}}
     <script>
         let table;
@@ -121,6 +129,12 @@
         function addForm(url){
             $('#modal-form').modal('show');
             $('#modal-form .modal-title').text('Add Member');
+
+            
+            $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+            });
 
             $('#modal-form form')[0].reset();
             $('#modal-form form').attr('action',url);
@@ -177,5 +191,7 @@
             $('.form-member').attr('action',url).attr('target','_blank').submit();
           }
         }
+
+        
     </script>
 @endpush
