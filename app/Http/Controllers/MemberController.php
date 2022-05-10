@@ -27,6 +27,10 @@ class MemberController extends Controller
         return datatables()
             ->of($member)//source
             ->addIndexColumn() //untuk nomer
+            ->addColumn('created_at', function ($member) {
+                return formatTanggal($member->created_at,false);
+            })
+            
             ->addColumn('select_all', function($member){
                 return '<input type="checkbox" name="id_member[]" value="'.$member->id.'">';
             })
@@ -35,6 +39,9 @@ class MemberController extends Controller
             })
             ->addColumn('phone', function($member){
                 return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text&app_absent=0" target="_blank">'.$member->phone.'</a>';
+            })
+            ->addColumn('tanggal_lahir', function ($member) {
+                return formatTanggal($member->tanggal_lahir,false);
             })
             ->addColumn('aksi', function($member){ //untuk aksi
                 $button = '<div class="btn-group"><button type="button" onclick="editForm(`'.route('member.update', $member->id).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button><button  type="button" onclick="deleteData(`'.route('member.destroy', $member->id).'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> </div>';

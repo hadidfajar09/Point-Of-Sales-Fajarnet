@@ -44,10 +44,12 @@
                         <input type="checkbox" name="select_all" id="select_id">
                       </th>
                         <th width="5%">No</th>
+                        <th>Tanggal Pembuatan</th>
                         <th>Code</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Phone</th>
+                        <th>Tanggal Lahir</th>
                         <th>Sisa Poin</th>
                         <th width="10%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -91,10 +93,12 @@
                 columns: [
                         {data: 'select_all', searchable: false, sortable: false},
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
+                        {data: 'created_at'},
                         {data: 'member_code'},
                         {data: 'name'},
                         {data: 'address'},
                         {data: 'phone'},
+                        {data: 'tanggal_lahir'},
                         {data: 'poin'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
@@ -155,6 +159,7 @@
               .done((response) => {
                 $('#modal-form [name=name]').val(response.name);
                 $('#modal-form [name=address]').val(response.address);
+                $('#modal-form [name=tanggal_lahir]').val(response.tanggal_lahir);
                 $('#modal-form [name=phone]').val(response.phone);
 
               })
