@@ -55,7 +55,7 @@ class SaleController extends Controller
                 return 'Rp. ' . formatUang($sale->pay);
             })
             ->addColumn('poin', function ($sale) {
-                return round($sale->total_price / 25000);
+                return round($sale->total_price / 25000); //edit poin
             })
             ->addColumn('kasir', function ($sale) {
                 return $sale->user['name'];
@@ -103,7 +103,7 @@ class SaleController extends Controller
         $sale->accepted = $request->diterima;
         $sale->update();
 
-        $poin = $request->total / 25000; //edit poin
+        $poin = round($request->total / 25000) ; //edit poin
         $member = Member::findOrFail($request->id_member);
         $member->poin += $poin;
         $member->update();
@@ -184,6 +184,16 @@ class SaleController extends Controller
     {
         $sale = Sale::find($id);
         $detail = SaleDetail::where('id_sale', $sale->id)->get();
+
+        $member = Member::where('id', $sale->id_member)->first();
+
+        if($member){
+            $poin = round($sale->total_price / 25000);
+        
+            $member['poin'] -= $poin;
+            $member->update();
+        }
+       
 
         foreach ($detail as $row) {
 

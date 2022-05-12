@@ -191,6 +191,11 @@ class ChangerController extends Controller
         $changer = Changer::find($id);
         $detail = ChangerDetail::where('id_changer', $changer->id)->get();
 
+        $member = Member::where('id', $changer->id_member)->first();
+
+        $member['poin'] += $changer->total_poin;
+        $member->update();
+
         foreach($detail as $row){
 
             $product = Product::find($row->id_product);

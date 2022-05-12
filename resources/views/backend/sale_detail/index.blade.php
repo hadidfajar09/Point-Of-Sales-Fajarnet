@@ -113,7 +113,7 @@ Transaksi Pembelian
                         <label for="member_code" class="col-lg-2 control-label">Member</label>
                         <div class="col-lg-8">
                           <div class="input-group">
-                            <input type="text" id="member_code" name="member_code" class="form-control" value="{{ $memberSelected->member_code }}">
+                            <input type="text" id="member_code" name="member_code" class="form-control" value="{{ $memberSelected->member_code }}" required autofocus>
                             <span class="help-block with-errors"></span>
                             <span class="input-group-btn">
                               <button onclick="tampilMember()" class="btn btn-info btn-flat" type="button">

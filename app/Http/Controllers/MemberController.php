@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Changer;
 use App\Models\Member;
+use App\Models\Sale;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -38,7 +39,7 @@ class MemberController extends Controller
                 return '<span class="label label-info">'.$member->member_code.'</span>';
             })
             ->addColumn('phone', function($member){
-                return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text&app_absent=0" target="_blank">'.$member->phone.'</a>';
+                return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text=🥳🥳 *KAMI DARI TOP CELLULER MAKASSAR MENGUCAPKAN SELAMAT ULANG TAHUN KEPADA BAPAK/IBU ' .$member->name. '* 🥳🥳🎂🎉🎊🎂🎉🎊🎂🎉🎊 %0A%0AKHUSUS HARI INI KAMI MEMBERIKAN HARGA KHUSUS DI HARI SPESIAL. BAPAK/IBU CUKUP DENGAN MENUNJUKKAN PESAN INI DI SETIAP PEMBELIAN DI STORE KAMI. %0A%0AAdapun Poin anda saat ini yaitu *'.$member->poin. '* poin sehingga anda dapat menukarkannya di setiap store kami. %0A%0AUntuk Penggunaan Voucher hanya dapat dilakukan 1x24 jam setelah pesan ini dikirimkan %0A%0Alinktr.ee/TopCellular &app_absent=0" target="_blank">'.$member->phone.'</a>';
             })
             ->addColumn('tanggal_lahir', function ($member) {
                 return formatTanggal($member->tanggal_lahir,false);
@@ -133,6 +134,13 @@ class MemberController extends Controller
         foreach ($changer as $row) {
             $row->delete();
         }
+
+        $sale = Sale::where('id_member', $id)->get();
+
+        foreach ($sale as $row) {
+            $row->delete();
+        }
+
 
         return response()->json('data berhasil dihapus');
     }

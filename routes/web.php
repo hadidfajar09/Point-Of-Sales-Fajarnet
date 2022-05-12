@@ -13,6 +13,7 @@ use App\Http\Controllers\SaleDetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpendController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OutlerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,9 @@ Route::group(['middleware' => 'auth'], function(){
     
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
     Route::resource('/category',CategoryController::class);
+
+    Route::get('/outlet/data', [OutlerController::class, 'data'])->name('outlet.data');
+    Route::resource('/outlet',OutlerController::class);
 
     Route::get('/product/data', [ProductController::class, 'data'])->name('product.data');
     Route::post('/product/delete-selected', [ProductController::class, 'deleteSelected'])->name('product.deleteselected');

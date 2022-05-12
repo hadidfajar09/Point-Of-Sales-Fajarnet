@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Outler;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,12 +18,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('backend.user.index');
+        $outler = Outler::all()->pluck('nama_outlet','id');
+        return view('backend.user.index',compact('outler'));
     }
 
     public function data()
     {
-        $user = User::isNotAdmin()->orderBy('id','desc')->get();
+        
+        $user = User::isNotAdmin()->leftJoin('outlers', 'outlers.id', 'users.id_outler')
+        ->select('users.*','nama_outlet') ->orderBy('id','desc')->get();
         return datatables()
             ->of($user)//source
             ->addIndexColumn() //untuk nomer
@@ -57,6 +61,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->id_outler = $request->id_outler;
         $user->password = bcrypt($request->password);
         $user->level = 1;
         $user->foto = '/img/user.jpg';
@@ -101,6 +106,8 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->id_outler = $request->id_outler;
+
         if($request->has('password') && $request->password != ""){
             $user->password = bcrypt($request->password);
         }

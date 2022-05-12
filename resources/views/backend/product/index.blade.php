@@ -40,13 +40,11 @@
                   <thead>
                       <th width="5%">
                         <input type="checkbox" name="select_all" id="select_id">
-                      </th>
-                      <th width="5%">No</th>
+                    </th>
                       <th>Code</th>
                       <th>Category</th>
                       <th>Produk</th>
                       <th>Brand</th>
-                      <th>Harga Beli</th>
                       <th>Harga Jual</th>
                       <th>Discount</th>
                       <th>Stock</th>
@@ -89,12 +87,10 @@
                 },
                 columns: [
                         {data: 'select_all', searchable: false, sortable: false},
-                        {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'product_code'},
                         {data: 'category_name'},
                         {data: 'product_name'},
                         {data: 'brand'},
-                        {data: 'purchase_price'},
                         {data: 'sale_price'},
                         {data: 'discount'},
                         {data: 'stock'},

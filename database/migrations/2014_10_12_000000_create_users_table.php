@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('foto');
             $table->tinyInteger('level');
-            $table->string('outlet');
+            $table->integer('id_outlet');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

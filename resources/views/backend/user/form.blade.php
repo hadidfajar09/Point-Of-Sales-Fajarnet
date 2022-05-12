@@ -18,6 +18,21 @@
                     <span class="help-block with-errors"></span>
                 </div>
             </div>
+
+            <div class="form-group row">
+              <label for="id_outler" class="col-md-4 col-md-offset control-label">Outlet</label>
+              <div class="col-md-6">
+                  <select class="form-control" name="id_outler" id="id_outler" required autofocus>
+                    <option value="">Pilih Outlet</option>
+                    @foreach ($outler as $key => $row)
+                        <option value="{{ $key }}">{{ $row }}</option>
+                    @endforeach
+
+                  </select>
+                  <span class="help-block with-errors"></span>
+
+              </div>
+          </div>
         
           <div class="form-group row">
               <label for="email" class="col-md-4 col-md-offset control-label">Email</label>

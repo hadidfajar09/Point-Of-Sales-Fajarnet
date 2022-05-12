@@ -36,6 +36,7 @@
                         <th width="5%">No</th>
                         <th>Kasir</th>
                         <th>Email</th>
+                        <th>Outlet</th>
                         <th width="10%"><i class="fa fa-cog"></i></th>
                     </thead>
                     
@@ -75,6 +76,7 @@
                         {data: 'DT_RowIndex', searchable: false, sortable: false},
                         {data: 'name'},
                         {data: 'email'},
+                        {data: 'nama_outlet'},
                         {data: 'aksi', searchable: false, sortable: false},
                 ]
             });
@@ -127,6 +129,7 @@
               .done((response) => {
                 $('#modal-form [name=name]').val(response.name);
                 $('#modal-form [name=email]').val(response.email);
+                $('#modal-form [name=id_outler]').val(response.id_outler);
 
               })
 

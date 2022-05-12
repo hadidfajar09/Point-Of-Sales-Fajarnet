@@ -31,18 +31,22 @@
     <table width="100%">
         <tr>
             <td rowspan="4" width="60%">
-                <img src="{{ asset($setting->path_logo) }}" alt="{{ $setting->path_logo }}" width="120">
+                <img src="{{ asset($setting->path_logo) }}" alt="{{ $setting->path_logo }}" width="100">
                 <br>
-                {{ $setting->address }}
-                <br>
-                <br>
+                {{ $setting->address }} <br>
+                No Invoice : {{ tambahNolDepan($sale->id,6)  }}
+            <br>
             </td>
             <td>Tanggal</td>
             <td>: {{ formatTanggal(date('Y-m-d')) }}</td>
         </tr>
         <tr>
-            <td>Member</td>
+            <td>Nama</td>
             <td>: {{ $sale->member['name'] ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td>: {{ $sale->member['member_code'] ?? '-' }}</td>
         </tr>
     </table>
 

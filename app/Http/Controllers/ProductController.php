@@ -34,20 +34,18 @@ class ProductController extends Controller
 
         return datatables()
             ->of($product)//source
-            ->addIndexColumn() //untuk nomer
             ->addColumn('select_all', function($product){
                 return '<input type="checkbox" name="id_product[]" value="'.$product->id.'">';
             })
             ->addColumn('product_code', function($product){
                 return '<span class="label label-success">'.$product->product_code.'</span>';
             })
-            ->addColumn('purchase_price', function($product){
-                $rp = 'Rp. ';
-                $format = formatUang($product->purchase_price);
-                return $rp . $format;
-            })
+           
             ->addColumn('sale_price', function($product){
                 return 'Rp. '. formatUang($product->sale_price); ;
+            })
+            ->addColumn('discount', function($product){
+                return $product->discount . '%';
             })
             ->addColumn('stock', function($product){
                 return formatUang($product->stock);
