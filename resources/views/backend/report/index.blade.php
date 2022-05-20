@@ -13,7 +13,7 @@ Laporan Pendapatan
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Laporan Pendapatan {{ formatTanggal($tanggalAwal) }} s/d {{ formatTanggal($tanggalAkhir) }}
+      Laporan Pendapatan {{ formatTanggal($tanggalAwal,false) }} s/d {{ formatTanggal($tanggalAkhir,false) }}
     </h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>

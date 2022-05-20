@@ -123,26 +123,26 @@ Transaksi Penukaran Poin
                       <div class="form-group row">
                           <label for="totalrp" class="col-lg-3 control-label">Total</label>
                           <div class="col-lg-8">
-                              <input type="text" id="totalrp" class="form-control" readonly>
+                              <input type="text" id="totalrp" class="form-control" readonly >
                           </div>
                       </div>
                     
                       <div class="form-group row">
                           <label for="bayar" class="col-lg-3 control-label">Bayar</label>
                           <div class="col-lg-8">
-                              <input type="text" id="bayarrp" class="form-control">
+                              <input type="text" id="bayarrp" class="form-control" readonly>
                           </div>
                       </div>
                       <div class="form-group row">
                         <label for="jumlah_poin" class="col-lg-3 control-label">Poin Bayar</label>
                         <div class="col-lg-8">
-                            <input type="text" name="total_jumlah_poin" id="total_jumlah_poin" class="form-control">
+                            <input type="text" name="total_jumlah_poin" id="total_jumlah_poin" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-group row">
                       <label for="sisa_poin" class="col-lg-3 control-label">Sisa Poin</label>
                       <div class="col-lg-8">
-                          <input type="text" id="sisa_poin" class="form-control">
+                          <input type="text" id="sisa_poin" class="form-control" readonly>
                       </div>
                   </div>
                   </form>

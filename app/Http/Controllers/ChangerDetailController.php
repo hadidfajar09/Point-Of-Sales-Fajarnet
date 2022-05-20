@@ -18,7 +18,8 @@ class ChangerDetailController extends Controller
     public function index()
     {
         $id_changer = session('id_changer');
-        $products = Product::orderBy('product_code', 'asc')->get();
+        $products = Product::leftJoin('categories', 'categories.id', 'products.id_category')
+        ->select('products.*','category_name')->where('poin', '!=', 0)->orderBy('product_code', 'asc')->get();
         $member = Member::find(session('id_member'));
         $discount = Changer::find($id_changer)->discount ?? 0;
 

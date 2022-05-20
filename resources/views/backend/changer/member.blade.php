@@ -13,7 +13,6 @@
             <thead>
               <th>Nama</th>
               <th>Phone</th>
-              <th>Alamat</th>
               <th>Sisa Poin</th>
               <th><i class="fa fa-cogs"></i></th>
             </thead>
@@ -22,7 +21,6 @@
                   <tr>
                     <td>{{ $row->name }}</td>
                     <td>{{ $row->phone }}</td>
-                    <td>{{ $row->address }}</td>
                     <td>{{ $row->poin }}</td>
                     
                     @if ( $row->poin === 0 )

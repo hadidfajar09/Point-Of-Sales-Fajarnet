@@ -41,6 +41,8 @@ Route::get('/', fn() => redirect()->route('login'));
 //     })->name('dashboard');
 // });
 
+Route::get('/costumer/cekpoin', [MemberController::class, 'cekpoin'])->name('member.cekpoin');
+Route::get('/costumer/cekpoin/data', [MemberController::class, 'cekpoinData'])->name('member.cekpoin.data');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Changer;
 use App\Models\Member;
+use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class MemberController extends Controller
                 return '<span class="label label-info">'.$member->member_code.'</span>';
             })
             ->addColumn('phone', function($member){
-                return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text=🥳🥳 *KAMI DARI TOP CELLULER MAKASSAR MENGUCAPKAN SELAMAT ULANG TAHUN KEPADA BAPAK/IBU ' .$member->name. '* 🥳🥳🎂🎉🎊🎂🎉🎊🎂🎉🎊 %0A%0AKHUSUS HARI INI KAMI MEMBERIKAN HARGA KHUSUS DI HARI SPESIAL. BAPAK/IBU CUKUP DENGAN MENUNJUKKAN PESAN INI DI SETIAP PEMBELIAN DI STORE KAMI. %0A%0AAdapun Poin anda saat ini yaitu *'.$member->poin. '* poin sehingga anda dapat menukarkannya di setiap store kami. %0A%0AUntuk Penggunaan Voucher hanya dapat dilakukan 1x24 jam setelah pesan ini dikirimkan %0A%0Alinktr.ee/TopCellular &app_absent=0" target="_blank">'.$member->phone.'</a>';
+                return '<a href="https://api.whatsapp.com/send/?phone='.$member->phone.'&text=🥳🥳 *KAMI DARI TOP CELLULER MAKASSAR MENGUCAPKAN SELAMAT KEPADA BAPAK/IBU ' .$member->name. ' TELAH BERBELANJA DI STORE KAMI DAN MENJADI MEMBER DI TOP CELLULAR DENGAN KODE MEMBER : ' . $member->member_code .'* 🥳🥳🎂🎉🎊🎂🎉🎊🎂🎉🎊 %0A%0AAdapun Poin anda saat ini yaitu *'.$member->poin. '* poin berlaku akumulasi dari total belanja anda Rp. 100.000/poin.  %0A%0AAnda dapat menukarkannya dengan produk-produk yang menarik hanya di Toko Top Asia Phone(Jln A.P Pettarani - samping ex giant).  %0A%0Alinktr.ee/TopCellular &app_absent=0" target="_blank">'.$member->phone.'</a>';
             })
             ->addColumn('tanggal_lahir', function ($member) {
                 return formatTanggal($member->tanggal_lahir,false);
@@ -163,6 +164,31 @@ class MemberController extends Controller
 
         return $pdf->stream('member.pdf');
 
+    }
+
+    public function cekpoin()
+    {
+        $products = Product::leftJoin('categories', 'categories.id', 'products.id_category')
+        ->select('products.*','category_name')->where('poin', '!=', 0)->orderBy('product_code', 'asc')->get();
+
+        return view('backend.cekpoin.index', compact('products'));
+    }
+
+    public function cekpoinData()
+    {
+        $member = Member::orderBy('member_code','asc')->get();
+
+        return datatables()
+            ->of($member)//source
+            ->addIndexColumn() //untuk nomer
+            ->addColumn('created_at', function ($member) {
+                return formatTanggal($member->created_at,false);
+            })
+            ->addColumn('member_code', function($member){
+                return '<span class="label label-danger">'.$member->member_code.'</span>';
+            })
+            ->rawColumns(['aksi','member_code','select_all','phone'])//biar kebaca
+            ->make(true);
     }
 }
 
